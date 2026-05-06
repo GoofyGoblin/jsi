@@ -1,0 +1,301 @@
+<!doctype html>
+
+<html class="dark" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>
+            Dotfiles Configurator | Precision Instruments Registration
+        </title>
+        <link href="./src/font.css" rel="stylesheet" />
+        <link href="./src/symbols.css" rel="stylesheet" />
+        <link href="./src/style.css" rel="stylesheet" />
+        <script id="tailwind-config">
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "surface-container": "#161a1e",
+                            "on-primary": "#003a93",
+                            background: "#0c0e10",
+                            secondary: "#9e9da1",
+                            "on-tertiary-fixed-variant": "#5b5672",
+                            "surface-container-high": "#1b2025",
+                            "on-secondary-fixed-variant": "#5b5b5f",
+                            "primary-fixed-dim": "#c6d3ff",
+                            "tertiary-fixed-dim": "#d5cdee",
+                            primary: "#b2c5ff",
+                            "on-background": "#e0e6ed",
+                            "surface-dim": "#0c0e10",
+                            "secondary-fixed": "#e4e2e6",
+                            "primary-container": "#0040a1",
+                            "on-secondary": "#1f2023",
+                            "on-tertiary-container": "#524c68",
+                            "error-container": "#7f2927",
+                            "on-surface-variant": "#a6acb3",
+                            "surface-container-lowest": "#000000",
+                            "on-tertiary-fixed": "#3f3a54",
+                            "on-surface": "#e0e6ed",
+                            error: "#ee7d77",
+                            "secondary-dim": "#9e9da1",
+                            "outline-variant": "#42494f",
+                            "on-error-container": "#ff9993",
+                            "on-error": "#490106",
+                            "error-dim": "#bb5551",
+                            "surface-container-highest": "#20262c",
+                            "on-secondary-fixed": "#3f3f43",
+                            "inverse-surface": "#f9f9fc",
+                            "primary-dim": "#9db7ff",
+                            "inverse-primary": "#0156d2",
+                            "primary-fixed": "#dae2ff",
+                            "on-secondary-container": "#c0bec3",
+                            tertiary: "#f1ebff",
+                            outline: "#70767d",
+                            "tertiary-dim": "#d5cdee",
+                            "surface-bright": "#262d33",
+                            "on-primary-fixed-variant": "#0053cc",
+                            "tertiary-container": "#e3dbfd",
+                            "surface-variant": "#20262c",
+                            "on-primary-container": "#c0cfff",
+                            "surface-tint": "#b2c5ff",
+                            surface: "#0c0e10",
+                            "on-primary-fixed": "#003991",
+                            "secondary-container": "#3b3b3f",
+                            "on-tertiary": "#5a5570",
+                            "inverse-on-surface": "#545557",
+                            "tertiary-fixed": "#e3dbfd",
+                            "secondary-fixed-dim": "#d5d4d8",
+                            "surface-container-low": "#111416",
+                        },
+                        borderRadius: {
+                            DEFAULT: "0.125rem",
+                            lg: "0.25rem",
+                            xl: "0.5rem",
+                            full: "0.75rem",
+                        },
+                        fontFamily: {
+                            headline: ["Space Grotesk"],
+                            display: ["Space Grotesk"],
+                            body: ["Inter"],
+                            label: ["Inter"],
+                        },
+                    },
+                },
+            };
+        </script>
+        <style>
+            body {
+                background-color: #0c0e10;
+                color: #e0e6ed;
+                font-family: "Inter", sans-serif;
+                -webkit-font-smoothing: antialiased;
+            }
+            .material-symbols-outlined {
+                font-variation-settings:
+                    "FILL" 0,
+                    "wght" 300,
+                    "GRAD" 0,
+                    "opsz" 24;
+            }
+            input:-webkit-autofill,
+            input:-webkit-autofill:hover,
+            input:-webkit-autofill:focus {
+                -webkit-text-fill-color: #e0e6ed;
+                -webkit-box-shadow: 0 0 0px 1000px #20262c inset;
+                transition: background-color 5000s ease-in-out 0s;
+            }
+        </style>
+        <script src="./src/register.mts" type="module" defer></script>
+    </head>
+    <body class="flex flex-col min-h-screen">
+        <!-- TopNavBar (Suppressed version for focused journey) -->
+        <header class="w-full top-0 sticky bg-[#0c0e10] z-50">
+            <div
+                class="flex justify-between items-center h-16 px-[15%] w-full mx-auto"
+            >
+                <div
+                    class="text-xl font-medium tracking-tight text-[#b2c5ff] font-['Space_Grotesk']"
+                >
+                    Dotfiles Configurator
+                </div>
+                <a
+                    class="text-[#a6acb3] font-label text-sm hover:text-[#f9f9fc]"
+                    href="#"
+                >
+                    Sign In
+                </a>
+            </div>
+        </header>
+        <main
+            class="grow flex items-center justify-center px-6 py-12 relative overflow-hidden"
+        >
+            <!-- Technical Asymmetry: Structural Background Elements -->
+            <div
+                class="absolute top-1/4 left-[10%] w-px h-64 bg-outline-variant opacity-20"
+            ></div>
+            <div
+                class="absolute bottom-1/4 right-[10%] w-px h-64 bg-outline-variant opacity-20"
+            ></div>
+            <div class="w-full max-w-md z-10">
+                <!-- Branding/Heading Anchor -->
+                <div class="mb-12">
+                    <h1
+                        class="font-display text-4xl md:text-5xl font-medium tracking-tighter text-on-surface mb-4"
+                    >
+                        Create Account
+                    </h1>
+                    <p
+                        class="font-body text-on-surface-variant text-sm tracking-wide"
+                    >
+                        ACCESS THE PRECISION INSTRUMENT ECOSYSTEM.
+                    </p>
+                </div>
+                <!-- Registration Form -->
+                <form class="space-y-6">
+                    <!-- Username Field -->
+                    <div class="space-y-2">
+                        <label
+                            class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant font-medium"
+                            for="username"
+                        >
+                            Username
+                        </label>
+                        <div class="relative">
+                            <input
+                                class="w-full bg-surface-container-highest border-none text-on-surface px-4 py-3 text-sm rounded-DEFAULT focus:ring-1 focus:ring-primary placeholder:text-outline-variant outline-none"
+                                id="register_username"
+                                name="username"
+                                placeholder="ARCH_UNIT_01"
+                                type="text"
+                            />
+                        </div>
+                    </div>
+                    <!-- Email Field -->
+                    <div class="space-y-2">
+                        <label
+                            class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant font-medium"
+                            for="email"
+                        >
+                            Email Address
+                        </label>
+                        <div class="relative">
+                            <input
+                                class="w-full bg-surface-container-highest border-none text-on-surface px-4 py-3 text-sm rounded-DEFAULT focus:ring-1 focus:ring-primary placeholder:text-outline-variant outline-none"
+                                id="register_email"
+                                name="email"
+                                placeholder="operator@archdots.io"
+                                type="email"
+                            />
+                        </div>
+                    </div>
+                    <!-- Password Row -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <label
+                                class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant font-medium"
+                                for="password"
+                            >
+                                Password
+                            </label>
+                            <input
+                                class="w-full bg-surface-container-highest border-none text-on-surface px-4 py-3 text-sm rounded-DEFAULT focus:ring-1 focus:ring-primary placeholder:text-outline-variant outline-none"
+                                id="register_password"
+                                name="password"
+                                placeholder="••••••••"
+                                type="password"
+                            />
+                        </div>
+                        <div class="space-y-2">
+                            <label
+                                class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant font-medium"
+                                for="confirm_password"
+                            >
+                                Confirm
+                            </label>
+                            <input
+                                class="w-full bg-surface-container-highest border-none text-on-surface px-4 py-3 text-sm rounded-DEFAULT focus:ring-1 focus:ring-primary placeholder:text-outline-variant outline-none"
+                                id="register_confirm_password"
+                                name="confirm_password"
+                                placeholder="••••••••"
+                                type="password"
+                            />
+                        </div>
+                    </div>
+                    <!-- Terms & Conditions Microcopy -->
+                    <div class="pt-2">
+                        <p
+                            class="text-[11px] text-on-surface-variant font-body leading-relaxed"
+                        >
+                            By proceeding, you agree to our
+                            <a
+                                class="text-primary hover:underline underline-offset-4"
+                                href="#"
+                                >Technical Protocol</a
+                            >
+                            and
+                            <a
+                                class="text-primary hover:underline underline-offset-4"
+                                href="#"
+                                >Privacy Standards</a
+                            >.
+                        </p>
+                    </div>
+                    <!-- Action Button -->
+                    <button
+                        class="w-full bg-primary hover:bg-primary-dim text-on-primary font-display font-medium py-4 rounded-DEFAULT duration-300 transform active:scale-[0.98] mt-4 flex items-center justify-center space-x-2"
+                        type="submit"
+                        id="register_submit_btn"
+                    >
+                        <span>Create Account</span>
+                        <span
+                            class="material-symbols-outlined text-lg"
+                            style="
+                                font-variation-settings: &quot;wght&quot; 500;
+                            "
+                            >arrow_forward</span
+                        >
+                    </button>
+                    <!-- Footer Link -->
+                    <div class="text-center pt-6">
+                        <p class="font-body text-xs text-on-surface-variant">
+                            ALREADY REGISTERED?
+                            <a
+                                class="text-primary hover:text-primary-dim font-medium ml-1 underline-offset-4 hover:underline"
+                                href="login.html#"
+                                >SIGN IN</a
+                            >
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </main>
+        <!-- Footer Component from JSON -->
+        <footer
+            class="w-full py-12 bg-[#0c0e10] flex flex-col md:flex-row justify-between items-center px-[15%] opacity-60"
+        >
+            <div
+                class="font-['Inter'] text-[10px] uppercase tracking-widest text-[#545557] mb-4 md:mb-0"
+            >
+                © 2024 Dotfiles Configurator PRECISION INSTRUMENTS
+            </div>
+            <div class="flex space-x-8">
+                <a
+                    class="font-['Inter'] text-[10px] uppercase tracking-widest text-[#545557] hover:text-[#a6acb3] underline-offset-4 hover:underline"
+                    href="#"
+                    >Privacy</a
+                >
+                <a
+                    class="font-['Inter'] text-[10px] uppercase tracking-widest text-[#545557] hover:text-[#a6acb3] underline-offset-4 hover:underline"
+                    href="#"
+                    >Terms</a
+                >
+                <a
+                    class="font-['Inter'] text-[10px] uppercase tracking-widest text-[#545557] hover:text-[#a6acb3] underline-offset-4 hover:underline"
+                    href="#"
+                    >Security</a
+                >
+            </div>
+        </footer>
+    </body>
+</html>
