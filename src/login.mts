@@ -1,55 +1,47 @@
-import { sendSubmittedElements } from "./register.mts";
+import { auth } from "./firebase.config";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
-const usernameInput= document.getElementById("login_username") as HTMLInputElement;
+const emailInput = document.getElementById("login_email") as HTMLInputElement;
 const password = document.getElementById("login_password") as HTMLInputElement;
 const submitBtn = document.getElementById("login_submit_btn") as HTMLButtonElement;
 
 
-interface regsiterUser
-{
-    username: string,
+interface loginUser {
     email: string,
-    password: string,
-    confirm_password: string
-}
-
-interface loginUser
-{
-    username: string,
     password: string
 }
 
-namespace loginFuncs
-{
-    function passSubmittedElementsWhenClicked(submitBtn: HTMLButtonElement,
-                                              usernameInput: HTMLInputElement,
-                                              password: HTMLInputElement)
-    {
+function passSubmittedElementsWhenClicked(submitBtn: HTMLButtonElement,
+    emailInput: HTMLInputElement,
+    password: HTMLInputElement) {
 
 
-        submitBtn.addEventListener("click", (e) =>
+    submitBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const userObj: loginUser =
         {
-            e.preventDefault();
-            const userObj: loginUser =
-            {
-                username: usernameInput.value,
-                password: password.value
-            }
-            checkSubmittedElements(userObj);
-        })
-
-    }
-
-    passSubmittedElementsWhenClicked(submitBtn, usernameInput, password);
-
-    function checkSubmittedElements(userObj: loginUser)
-    {
-        if (!userObj.username || userObj.password)
-        {
-            alert("Invalid credentials");
-            return
+            email: emailInput.value,
+            password: password.value
         }
-        sendSubmittedElements(userObj);
-    }
+        checkSubmittedElements(userObj);
+    })
+
 }
+
+passSubmittedElementsWhenClicked(submitBtn, emailInput, password);
+
+function checkSubmittedElements(userObj: loginUser) {
+    if (!userObj.email || userObj.password) {
+        alert("Invalid Credentials");
+        return
+    }
+    signInWithEmailAndPassword(auth, userObj.email, userObj.password)
+        .then(userCredentials => {
+            alert("Logged in")
+        })
+        .catch(e => {
+            alert(e.message);
+        })
+}
+
 
