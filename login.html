@@ -8,81 +8,7 @@
         <link href="./src/font.css" rel="stylesheet" />
         <link href="./src/symbols.css" rel="stylesheet" />
         <link href="./src/style.css" rel="stylesheet" />
-        <script id="tailwind-config">
-            tailwind.config = {
-                darkMode: "class",
-                theme: {
-                    extend: {
-                        colors: {
-                            "surface-container": "#161a1e",
-                            "on-primary": "#003a93",
-                            background: "#0c0e10",
-                            secondary: "#9e9da1",
-                            "on-tertiary-fixed-variant": "#5b5672",
-                            "surface-container-high": "#1b2025",
-                            "on-secondary-fixed-variant": "#5b5b5f",
-                            "primary-fixed-dim": "#c6d3ff",
-                            "tertiary-fixed-dim": "#d5cdee",
-                            primary: "#b2c5ff",
-                            "on-background": "#e0e6ed",
-                            "surface-dim": "#0c0e10",
-                            "secondary-fixed": "#e4e2e6",
-                            "primary-container": "#0040a1",
-                            "on-secondary": "#1f2023",
-                            "on-tertiary-container": "#524c68",
-                            "error-container": "#7f2927",
-                            "on-surface-variant": "#a6acb3",
-                            "surface-container-lowest": "#000000",
-                            "on-tertiary-fixed": "#3f3a54",
-                            "on-surface": "#e0e6ed",
-                            error: "#ee7d77",
-                            "secondary-dim": "#9e9da1",
-                            "outline-variant": "#42494f",
-                            "on-error-container": "#ff9993",
-                            "on-error": "#490106",
-                            "error-dim": "#bb5551",
-                            "surface-container-highest": "#20262c",
-                            "on-secondary-fixed": "#3f3f43",
-                            "inverse-surface": "#f9f9fc",
-                            "primary-dim": "#9db7ff",
-                            "inverse-primary": "#0156d2",
-                            "primary-fixed": "#dae2ff",
-                            "on-secondary-container": "#c0bec3",
-                            tertiary: "#f1ebff",
-                            outline: "#70767d",
-                            "tertiary-dim": "#d5cdee",
-                            "surface-bright": "#262d33",
-                            "on-primary-fixed-variant": "#0053cc",
-                            "tertiary-container": "#e3dbfd",
-                            "surface-variant": "#20262c",
-                            "on-primary-container": "#c0cfff",
-                            "surface-tint": "#b2c5ff",
-                            surface: "#0c0e10",
-                            "on-primary-fixed": "#003991",
-                            "secondary-container": "#3b3b3f",
-                            "on-tertiary": "#5a5570",
-                            "inverse-on-surface": "#545557",
-                            "tertiary-fixed": "#e3dbfd",
-                            "secondary-fixed-dim": "#d5d4d8",
-                            "surface-container-low": "#111416",
-                        },
-                        borderRadius: {
-                            DEFAULT: "0.125rem",
-                            lg: "0.25rem",
-                            xl: "0.5rem",
-                            full: "0.75rem",
-                        },
-                        fontFamily: {
-                            headline: ["Space Grotesk"],
-                            display: ["Space Grotesk"],
-                            body: ["Inter"],
-                            label: ["Inter"],
-                        },
-                    },
-                },
-            };
-        </script>
-        <script src="./src/login.mts"></script>
+        <script src="./src/login.mts" type="module" defer></script>
         <style>
             body {
                 background-color: #0c0e10;
@@ -102,7 +28,6 @@
             input:-webkit-autofill:focus {
                 -webkit-text-fill-color: #e0e6ed;
                 -webkit-box-shadow: 0 0 0px 1000px #20262c inset;
-                transition: background-color 5000s ease-in-out 0s;
             }
         </style>
     </head>
@@ -141,7 +66,7 @@
                         Login
                     </h1>
                 </div>
-                <form class="space-y-6" action="home.html">
+                <form class="space-y-6">
                     <div class="space-y-2">
                         <label
                             class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant font-medium"
@@ -184,7 +109,7 @@
                         />
                     </div>
                     <button
-                        class="w-full bg-primary hover:bg-primary-dim text-on-primary font-display font-medium py-4 rounded-DEFAULT duration-300 transform active:scale-[0.98] mt-4 flex items-center justify-center space-x-2"
+                        class="w-full bg-primary hover:bg-primary-dim text-on-primary font-display font-medium py-4 rounded-DEFAULT duration-300 mt-4 flex items-center justify-center space-x-2"
                         type="submit"
                         id="login_submit_button"
                     >
@@ -199,7 +124,7 @@
                     </button>
                     <div class="text-center pt-6">
                         <p class="font-body text-xs text-on-surface-variant">
-                            NEW OPERATOR?
+                            Don't have an account?
                             <a
                                 class="text-primary hover:text-primary-dim font-medium ml-1 underline-offset-4 hover:underline"
                                 href="register.html"

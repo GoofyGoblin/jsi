@@ -1,7 +1,8 @@
 /* firebase stuff */
-import { collection, addDoc, serverTimestamp } from "firebase/firestore"
+import { collection, setDoc, serverTimestamp, doc} from "firebase/firestore"
 import { app, db, auth } from "./firebase.config.ts"
 import { createUserWithEmailAndPassword } from "firebase/auth"
+import type { User } from "firebase/auth/web-extension";
 
 
 const usernameRegisterInput = document.getElementById("register_username") as HTMLInputElement;
@@ -46,31 +47,31 @@ function checkSubmittedElements(userObj: regsiterUser) {
         return
     }
     createNewUserInAuth(userObj);
-    sendSubmittedElements(userObj);
 }
 
 function createNewUserInAuth(userObj: regsiterUser) {
-    createUserWithEmailAndPassword(auth, userObj.email, userObj.username)
+    createUserWithEmailAndPassword(auth, userObj.email, userObj.password)
         .then(userCredentials => {
             alert('Registered succesfully');
+            sendSubmittedElements(userObj, userCredentials);
         })
         .catch(e => {
             alert(e.message);
         })
-
 }
 
-async function sendSubmittedElements(userObj: regsiterUser) {
+async function sendSubmittedElements(userObj: regsiterUser, userCreds: any) {
     try {
-        const docRef = await addDoc(collection(db, "users"), {
+        const docRef = collection(db, "users")
+        const user = {
             activeConfigId: "none",
             createdAt: serverTimestamp(),
             email: userObj.email,
             role: "user",
             username: userObj.username
-        })
-        console.log("Document written with id: ", docRef.id)
-        sendUserToLoginPage()
+        }
+        await setDoc(doc(docRef, userCreds.user.uid), user);
+        sendUserToLoginPage();
     } catch (e) {
         console.log("Error. problem when adding user to db", e)
     }

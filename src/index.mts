@@ -143,8 +143,8 @@ function addUserOption() {
 }
 
 function checkIfLoggedIn(userOption: user_option) {
-    const userSession = localStorage.getItem("userSession");
-    if (!userSession) {
+    const userInfo = sessionStorage.getItem("user");
+    if (!userInfo) {
         window.location.href = "login.html#"
         return;
     }
