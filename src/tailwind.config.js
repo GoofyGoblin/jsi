@@ -42,6 +42,8 @@ module.exports = {
         "on-background": "#e0e6ed",
         surface: "#0c0e10",
         "surface-tint": "#b2c5ff",
+        "surface-bg": "#e3e9f9",
+        "surface-topbar": "#edf1fc",
         "outline-variant": "#42494f",
         "secondary-container": "#3b3b3f",
         "on-primary-container": "#c0cfff",
@@ -65,6 +67,7 @@ module.exports = {
         "surface-container": "#161a1e",
         monolith: {
           background: "#0c0e10",
+          backgroundLight: "#bfdefc",
           surface: "#111416",
           border: "#1b2025",
           text: "#e0e6ed",
