@@ -1,12 +1,11 @@
 import { auth, db } from "./firebase.config.ts";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut} from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 
 const emailInput = document.getElementById("login_email") as HTMLInputElement;
 const password = document.getElementById("login_password") as HTMLInputElement;
-const submitBtn = document.getElementById(
-  "login_submit_button",
-) as HTMLButtonElement;
+const submitBtn = document.getElementById("login_submit_button") as HTMLButtonElement;
+
 
 interface loginUser {
   email: string;
@@ -57,3 +56,4 @@ function getUserInfoFromDb(userCreds: any) {
 function sendUserToHomePage() {
   window.location.href = "index.html";
 }
+
