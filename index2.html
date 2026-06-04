@@ -6,6 +6,7 @@
         <link href="./src/style.css" rel="stylesheet" />
         <link href="./src/font.css" rel="stylesheet" />
         <title>Dotfiles Configurator</title>
+        <script src="./src/index.mts" type="module" defer></script>
     </head>
     <body class="min-h-screen font-body pb-10 bg-surface-bg">
         <div class="flex flex-col">
@@ -123,7 +124,7 @@
                         <div>
                             <!-- hyprland card start -->
                             <div
-                                id="hyprland-box"
+                                id="hyprland_box"
                                 class="tilingwm-selector-bg mb-4"
                             >
                                 <h4 class="selector-text prevent-select">
@@ -137,7 +138,7 @@
 
                             <!-- sway card start -->
                             <div
-                                id="sway-box"
+                                id="sway_box"
                                 class="tilingwm-selector-bg mb-4"
                             >
                                 <h4 class="selector-text prevent-select">
@@ -171,7 +172,7 @@
                         <div>
                             <!-- i3 card start-->
                             <div
-                                id="i3-gaps-box"
+                                id="i3_box"
                                 class="tilingwm-selector-bg mb-4"
                             >
                                 <h4 class="selector-text prevent-select">
@@ -185,7 +186,7 @@
 
                             <!-- bspwm card start-->
                             <div
-                                id="bspwm-box"
+                                id="bspwm_box"
                                 class="tilingwm-selector-bg mb-4"
                             >
                                 <h4 class="selector-text prevent-select">
@@ -221,28 +222,28 @@
                             class="flex flex-col md:flex-row gap-2 justify-start"
                         >
                             <!-- neovim box start -->
-                            <div class="editor-selector-bg">
+                            <div class="editor-selector-bg" id="neovim_box">
                                 <h5 class="selector-text">Neovim</h5>
                                 <p class="selector-desc">Lorem ipsum</p>
                             </div>
                             <!-- neovim box end -->
 
                             <!-- emacs box start -->
-                            <div class="editor-selector-bg">
+                            <div class="editor-selector-bg" id="emacs_box">
                                 <h5 class="selector-text">Emacs</h5>
                                 <p class="selector-desc">Lorem ipsum</p>
                             </div>
                             <!-- emacs box end -->
 
                             <!-- vscode box start -->
-                            <div class="editor-selector-bg">
+                            <div class="editor-selector-bg" id="code_box">
                                 <h5 class="selector-text">VS Code</h5>
                                 <p class="selector-desc">Lorem ipsum</p>
                             </div>
                             <!-- vscode box end -->
 
                             <!-- helix box start -->
-                            <div class="editor-selector-bg">
+                            <div class="editor-selector-bg" id="helix_box">
                                 <h5 class="selector-text">Helix</h5>
                                 <p class="selector-desc">Lorem ipsum</p>
                             </div>

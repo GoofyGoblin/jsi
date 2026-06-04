@@ -84,37 +84,13 @@ async function sendSubmittedElements(userObj: regsiterUser, userCreds: any) {
 
 // Google sign in
 function googleBtnClicked() {
-  googleBtn.addEventListener("click", () => {
-    // signInWithPopup(auth, provider)
-    //   .then((result) => {
-    //       const credential: any = GoogleAuthProvider.credentialFromResult(result);
-    //       const token = credential.accessToken;
-    //       const user = result.user;
-    //
-    //       console.table({
-    //           "cred": credential,
-    //           "token": token,
-    //           "user": user
-    //       })
-    //   })
-    //   .catch((error) => {
-    //       const errorCode = error.code;
-    //       const errorMessage = error.message;
-    //       const email = error.customData.email;
-    //       const credential = GoogleAuthProvider.credentialFromError(error);
-    //
-    //
-    //       console.log(error);
-    //       console.table({
-    //           "code": errorCode,
-    //           "message": errorMessage,
-    //           "email": email,
-    //           "credentials": credential
-    //       })
-    //   })
-    signInWithGoogle();
+  googleBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const username = prompt("Please type your username") as string
+    signInWithGoogle("user", username);
   })
 }
+
 
 googleBtnClicked()
 

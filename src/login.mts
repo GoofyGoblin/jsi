@@ -1,10 +1,13 @@
 import { auth, db } from "./firebase.config.ts";
 import { signInWithEmailAndPassword, signOut} from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
+import { signInWithGoogle } from "./auth.mts";
 
 const emailInput = document.getElementById("login_email") as HTMLInputElement;
 const password = document.getElementById("login_password") as HTMLInputElement;
 const submitBtn = document.getElementById("login_submit_button") as HTMLButtonElement;
+
+const googleBtn = document.getElementById("google_btn") as HTMLButtonElement;
 
 
 interface loginUser {
@@ -52,6 +55,11 @@ function getUserInfoFromDb(userCreds: any) {
     }
   });
 }
+
+googleBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    signInWithGoogle();
+})
 
 function sendUserToHomePage() {
   window.location.href = "index.html";
