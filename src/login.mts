@@ -1,14 +1,16 @@
 import { auth, db } from "./firebase.config.ts";
-import { signInWithEmailAndPassword, signOut} from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { signInWithGoogle } from "./auth.mts";
+import { userSession } from "./userSession.mts";
 
 const emailInput = document.getElementById("login_email") as HTMLInputElement;
-const password = document.getElementById("login_password") as HTMLInputElement;
-const submitBtn = document.getElementById("login_submit_button") as HTMLButtonElement;
+const password = document.getElementById("password_input") as HTMLInputElement;
+const submitBtn = document.getElementById(
+  "login_submit_btn",
+) as HTMLButtonElement;
 
 const googleBtn = document.getElementById("google_btn") as HTMLButtonElement;
-
 
 interface loginUser {
   email: string;
@@ -48,7 +50,7 @@ function getUserInfoFromDb(userCreds: any) {
   const docSnap = getDoc(docRef);
   docSnap.then((doc) => {
     if (doc.exists()) {
-      sessionStorage.setItem("user", JSON.stringify(doc.data()));
+      localStorage.setItem(userSession.sessionKey, JSON.stringify(doc.data()));
       sendUserToHomePage();
     } else {
       console.log("No such document!");
@@ -56,12 +58,16 @@ function getUserInfoFromDb(userCreds: any) {
   });
 }
 
-googleBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    signInWithGoogle();
-})
+googleBtn.addEventListener("click", async (e) => {
+  e.preventDefault();
+  const isSignedIn = await signInWithGoogle("user");
+
+  if (isSignedIn) {
+    alert("Logged in succesfully");
+    window.location.href = "index.html";
+  }
+});
 
 function sendUserToHomePage() {
   window.location.href = "index.html";
 }
-

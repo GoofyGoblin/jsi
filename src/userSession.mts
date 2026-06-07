@@ -1,89 +1,73 @@
 /*
- * Usersession, manages the user session.
- */
+* UserSession, some methods to save time on manipulating user data
+*/
 
 class UserSession {
-    sessionKey: string
-    userInfoKey: string
+  sessionKey: string
+  userInfoKey: string
 
   constructor() {
     this.sessionKey = "user_session"
     this.userInfoKey = "user_info"
   }
 
-  /*
-   * Saves the user info inside localStorage
-   */
-
   saveSession(user: any, additionalInfo = {}) {
+
     const sessionData = {
-      uid: user.uid,
+      configId: user.activeConfigId,
+      createdAt: user.createdAt,
       email: user.email,
-      displayName: user.displayName || "",
-      photoURL: user.photoURL || "",
-      emailVerified: user.emailVerified,
+      role: user.role,
+      username: user.displayName,
       loginTime: new Date().toISOString(),
-      ...additionalInfo,
+      ...additionalInfo
     }
 
     localStorage.setItem(this.sessionKey, JSON.stringify(sessionData))
-    console.log("Phiên đăng nhập đã được lưu:", sessionData)
+    console.log("Saved session data", sessionData)
+    console.log("User data", user)
   }
 
-  /*
-   * Gets the user info from localStorage
-   */
   getSession() {
     const sessionData = localStorage.getItem(this.sessionKey)
     return sessionData ? JSON.parse(sessionData) : null
   }
 
-  /*
-   * Check if user is logged in by checking the local storage data
-   */
+  clearSession() {
+    localStorage.removeItem(this.sessionKey)
+    console.log("Removed session data")
+  }
+
+  saveUserInfo(userInfo: any) {
+    localStorage.setItem(this.userInfoKey, userInfo)
+  }
 
   isLoggedIn() {
     return this.getSession() !== null
   }
 
-  getCurrentUser() {
-    return this.getSession()
-  }
-
-  clearSession() {
-    localStorage.removeItem(this.sessionKey)
-    localStorage.removeItem(this.userInfoKey)
-    console.log("Phiên đăng nhập đã được xóa")
-  }
-
-  saveUserInfo(userInfo: any) {
-    localStorage.setItem(this.userInfoKey, JSON.stringify(userInfo))
-  }
-
-  getUserInfo() {
-    const userInfo = localStorage.getItem(this.userInfoKey)
-    return userInfo ? JSON.parse(userInfo) : null
-  }
-
   isSessionExpired() {
-    const session = this.getSession()
-    if (!session || !session.loginTime) return true
+    const sessionData = this.getSession()
+    if (!sessionData || !sessionData.loginTime) return true
 
-    const loginTime: any = new Date(session.loginTime)
-    const now: any = new Date()
-    const hoursDiff = (now - loginTime) / (1000 * 60 * 60)
+    const loginTime: any = new Date(sessionData.loginTime)
+    const currentTime: any = new Date()
+
+    const hoursDiff = (currentTime - loginTime) / 3600000
 
     return hoursDiff > 24
   }
 
   refreshSession() {
-    const session = this.getSession()
-    if (session) {
-      session.loginTime = new Date().toISOString()
-      localStorage.setItem(this.sessionKey, JSON.stringify(session))
+    const sessionData = this.getSession()
+
+    if (sessionData) {
+      sessionData.loginTime = new Date().toISOString()
+      localStorage.setItem(this.sessionKey, JSON.stringify(sessionData))
     }
   }
 }
 
 export const userSession = new UserSession()
+export default UserSession
 

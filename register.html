@@ -1,228 +1,391 @@
 <!doctype html>
-
-<html class="dark" lang="en">
+<html lang="en">
     <head>
-        <meta charset="utf-8" />
-        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-        <title>
-            Dotfiles Configurator | Precision Instruments Registration
-        </title>
-        <link href="./src/font.css" rel="stylesheet" />
-        <link href="./src/symbols.css" rel="stylesheet" />
-        <link href="./src/style.css" rel="stylesheet" />
-        <style>
-            body {
-                background-color: #0c0e10;
-                color: #e0e6ed;
-                font-family: "Inter", sans-serif;
-                -webkit-font-smoothing: antialiased;
-            }
-            .material-symbols-outlined {
-                font-variation-settings:
-                    "FILL" 0,
-                    "wght" 300,
-                    "GRAD" 0,
-                    "opsz" 24;
-            }
-            input:-webkit-autofill,
-            input:-webkit-autofill:hover,
-            input:-webkit-autofill:focus {
-                -webkit-text-fill-color: #e0e6ed;
-                -webkit-box-shadow: 0 0 0px 1000px #20262c inset;
-                transition: background-color 5000s ease-in-out 0s;
-            }
-        </style>
-        <script src="./src/register.mts" type="module" defer></script>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Register</title>
+        <link href="src/style.css" rel="stylesheet" />
+        <link href="src/font.css" rel="stylesheet" />
+        <script src="src/register.mts" type="module"></script>
+        <script src="src/theme.mts"></script>
     </head>
-    <body class="flex flex-col min-h-screen">
-        <!-- TopNavBar (Suppressed version for focused journey) -->
-        <header class="w-full top-0 sticky bg-[#0c0e10] z-50">
-            <div
-                class="flex justify-between items-center h-16 px-[15%] w-full mx-auto"
-            >
-                <div
-                    class="text-xl font-medium tracking-tight text-[#b2c5ff] font-['Space_Grotesk']"
+    <body class="bg-surface-bg">
+        <header>
+            <div class="absolute top-4 right-4">
+                <button
+                    id="theme-changer"
+                    onclick="
+                        document.body.classList.toggle(`dark`);
+                        document.body.classList.toggle(`bg-background`);
+                        document.body.classList.toggle(`bg-surface-bg`);
+                        localStorage.setItem(
+                            `user_theme`,
+                            JSON.stringify(`dark`),
+                        );
+                    "
                 >
-                    Dotfiles Configurator
-                </div>
-                <a
-                    class="text-[#a6acb3] font-label text-sm hover:text-[#f9f9fc]"
-                    href="#"
-                >
-                    Sign In
-                </a>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="size-6 dark:text-on-background"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+                        />
+                    </svg>
+                </button>
             </div>
         </header>
-        <main
-            class="grow flex items-center justify-center px-6 py-12 relative overflow-hidden"
-        >
-            <!-- Technical Asymmetry: Structural Background Elements -->
-            <div
-                class="absolute top-1/4 left-[10%] w-px h-64 bg-outline-variant opacity-20"
-            ></div>
-            <div
-                class="absolute bottom-1/4 right-[10%] w-px h-64 bg-outline-variant opacity-20"
-            ></div>
-            <div class="w-full max-w-md z-10">
-                <!-- Branding/Heading Anchor -->
-                <div class="mb-12">
+        <main class="flex items-center justify-center min-h-screen">
+            <div>
+                <!-- Heading section start -->
+                <div class="mb-10">
                     <h1
-                        class="font-display text-4xl md:text-5xl font-medium tracking-tighter text-on-surface mb-4"
+                        class="font-headline text-5xl dark:text-white tracking-tighter"
                     >
                         Create Account
                     </h1>
-                    <p
-                        class="font-body text-on-surface-variant text-sm tracking-wide"
-                    >
-                        ACCESS THE PRECISION INSTRUMENT ECOSYSTEM.
-                    </p>
+                    <h1 class="font-headline"></h1>
                 </div>
-                <!-- Registration Form -->
-                <form class="space-y-6">
-                    <!-- Username Field -->
-                    <div class="space-y-2">
+                <!-- Heading section end -->
+
+                <label
+                    class="text-[13px] flex flex-row items-center text-red-500 hidden"
+                    id="weak_password"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="size-5"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                        />
+                    </svg>
+                    Password too weak
+                </label>
+
+                <label
+                    class="text-[13px] flex flex-row items-center text-red-500 hidden"
+                    id="somethings_wrong"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="size-5"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                        />
+                    </svg>
+                    Something went wrong
+                </label>
+
+                <label
+                    class="text-[13px] flex flex-row items-center text-red-500 hidden"
+                    id="email_in_use"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="size-5"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                        />
+                    </svg>
+                    Email already in use
+                </label>
+                <!-- Registration form start  -->
+                <div class="flex flex-col gap-5">
+                    <!-- username field start -->
+                    <div>
                         <label
-                            class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant font-medium"
-                            for="username"
+                            for=""
+                            class="font-headline text-[10px] uppercase tracking-[0.2rem] dark:text-white"
+                            >Username</label
                         >
-                            Username
-                        </label>
                         <div class="relative">
                             <input
-                                class="w-full bg-surface-container-highest border-none text-on-surface px-4 py-3 text-sm rounded-DEFAULT focus:ring-1 focus:ring-primary placeholder:text-outline-variant outline-none"
-                                id="register_username"
-                                name="username"
-                                placeholder="ARCH_UNIT_01"
+                                class="w-100 border-none rounded-sm dark:bg-surface-container-highest focus:ring-0"
                                 type="text"
+                                name="username"
+                                placeholder="example"
+                                id="register_username"
                             />
                         </div>
                     </div>
-                    <!-- Email Field -->
-                    <div class="space-y-2">
+                    <!-- username field end -->
+
+                    <!-- email field start -->
+                    <div>
                         <label
-                            class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant font-medium"
-                            for="email"
+                            for=""
+                            class="font-headline text-[10px] uppercase tracking-[0.2rem] dark:text-white"
+                            >Email Address</label
                         >
-                            Email Address
-                        </label>
                         <div class="relative">
                             <input
-                                class="w-full bg-surface-container-highest border-none text-on-surface px-4 py-3 text-sm rounded-DEFAULT focus:ring-1 focus:ring-primary placeholder:text-outline-variant outline-none"
-                                id="register_email"
-                                name="email"
-                                placeholder="operator@archdots.io"
+                                class="w-100 border-none rounded-sm dark:bg-surface-container-highest dark:text-white outline-none focus:ring-0"
                                 type="email"
+                                name="email"
+                                placeholder="example@mail.com"
+                                id="register_email"
                             />
                         </div>
                     </div>
-                    <!-- Password Row -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="space-y-2">
-                            <label
-                                class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant font-medium"
-                                for="password"
-                            >
-                                Password
-                            </label>
-                            <input
-                                class="w-full bg-surface-container-highest border-none text-on-surface px-4 py-3 text-sm rounded-DEFAULT focus:ring-1 focus:ring-primary placeholder:text-outline-variant outline-none"
-                                id="register_password"
-                                name="password"
-                                placeholder="••••••••"
-                                type="password"
-                            />
-                        </div>
-                        <div class="space-y-2">
-                            <label
-                                class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant font-medium"
-                                for="confirm_password"
-                            >
-                                Confirm
-                            </label>
-                            <input
-                                class="w-full bg-surface-container-highest border-none text-on-surface px-4 py-3 text-sm rounded-DEFAULT focus:ring-1 focus:ring-primary placeholder:text-outline-variant outline-none"
-                                id="register_confirm_password"
-                                name="confirm_password"
-                                placeholder="••••••••"
-                                type="password"
-                            />
-                        </div>
-                    </div>
-                    <!-- Terms & Conditions Microcopy -->
-                    <div class="pt-2">
-                        <p
-                            class="text-[11px] text-on-surface-variant font-body leading-relaxed"
+                    <!-- email field end -->
+
+                    <!-- password field start -->
+                    <div>
+                        <label
+                            for="password"
+                            class="font-headline text-[10px] uppercase tracking-[0.2rem] dark:text-white"
+                            >Password</label
                         >
-                            By proceeding, you agree to our
-                            <a
-                                class="text-primary hover:underline underline-offset-4"
-                                href="#"
-                                >Technical Protocol</a
-                            >
-                            and
-                            <a
-                                class="text-primary hover:underline underline-offset-4"
-                                href="#"
-                                >Privacy Standards</a
-                            >.
-                        </p>
+                        <div
+                            class="relative bg-white dark:bg-surface-container-highest rounded-sm flex flex-row items-center"
+                        >
+                            <input
+                                type="password"
+                                name="password"
+                                class="w-92 border-none rounded-sm dark:bg-surface-container-highest dark:text-white focus:ring-0"
+                                id="password_input"
+                                placeholder="••••••"
+                                oninput="
+                                    this.value = this.value.replace(/\s/g, '')
+                                "
+                            />
+
+                            <button id="password_peek_btn" class="mr-2">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="size-6 dark:text-on-background hidden"
+                                    id="eye_icon_open"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                                    />
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                                    />
+                                </svg>
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="size-6 dark:text-on-background"
+                                    id="eye_icon_close"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
-                    <!-- Action Button -->
+                    <div>
+                        <label
+                            for=""
+                            class="font-headline text-[10px] uppercase tracking-[0.2rem] dark:text-white"
+                            >Confirm</label
+                        >
+                        <div
+                            class="relative bg-white dark:bg-surface-container-highest rounded-sm flex flex-row items-center"
+                        >
+                            <input
+                                type="password"
+                                name="password"
+                                class="w-92 border-none rounded-sm dark:bg-surface-container-highest dark:text-white focus:ring-0"
+                                id="confirm_input"
+                                placeholder="••••••"
+                                oninput="
+                                    this.value = this.value.replace(/\s/g, '')
+                                "
+                            />
+
+                            <button id="confirm_peek_btn" class="mr-2">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="size-6 dark:text-on-background hidden"
+                                    id="eye_icon_open2"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                                    />
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                                    />
+                                </svg>
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="size-6 dark:text-on-background"
+                                    id="eye_icon_close2"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- password field end -->
+
+                    <!-- button section start -->
                     <button
-                        class="w-full bg-primary hover:bg-primary-dim text-on-primary font-display font-medium py-4 rounded-DEFAULT duration-300 transform active:scale-[0.98] mt-4 flex items-center justify-center space-x-2"
                         type="submit"
+                        class="font-headline bg-primary-dim hover:bg-primary rounded-sm w-100 p-2.5"
                         id="register_submit_btn"
                     >
-                        <span>Create Account</span>
-                        <span
-                            class="material-symbols-outlined text-lg"
-                            style="
-                                font-variation-settings: &quot;wght&quot; 500;
-                            "
-                            >arrow_forward</span
-                        >
+                        <span>Create account</span>
                     </button>
-                    <!-- Footer Link -->
-                    <div class="text-center pt-6">
-                        <p class="font-body text-xs text-on-surface-variant">
-                            ALREADY REGISTERED?
-                            <a
-                                class="text-primary hover:text-primary-dim font-medium ml-1 underline-offset-4 hover:underline"
-                                href="login.html#"
-                                >SIGN IN</a
-                            >
-                        </p>
-                        <button class="bg-surface-container-highest p-2 mt-2 rounded-sm" id="google_btn">google</button>
-                    </div>
-                </form>
+                    <!-- button section end -->
+                </div>
+                <!-- footer start -->
+                <div class="font-headline">
+                    <p class="dark:text-white">
+                        Already have an account?
+                        <a
+                            href="login.html#"
+                            class="dark:text-on-primary-container text-on-primary"
+                            >LOGIN</a
+                        >
+                    </p>
+
+                    <p
+                        class="dark:text-white flex justify-center text-1.2xl mt-5 mb-5"
+                    >
+                        or
+                    </p>
+                    <button
+                        type="submit"
+                        class="font-headline bg-primary-dim hover:bg-primary rounded-sm w-100 p-2.5 flex items-center"
+                        id="google_btn"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            x="0px"
+                            y="0px"
+                            width="30"
+                            height="30"
+                            viewBox="0 0 48 48"
+                        >
+                            <path
+                                fill="#FFC107"
+                                d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
+                            ></path>
+                            <path
+                                fill="#FF3D00"
+                                d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
+                            ></path>
+                            <path
+                                fill="#4CAF50"
+                                d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
+                            ></path>
+                            <path
+                                fill="#1976D2"
+                                d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
+                            ></path>
+                        </svg>
+                        <span class="ml-18">Continue with Google</span>
+                    </button>
+                </div>
             </div>
+
+            <!-- footer end -->
+            <!-- Registration form end  -->
         </main>
-        <!-- Footer Component from JSON -->
-        <footer
-            class="w-full py-12 bg-[#0c0e10] flex flex-col md:flex-row justify-between items-center px-[15%] opacity-60"
-        >
-            <div
-                class="font-['Inter'] text-[10px] uppercase tracking-widest text-[#545557] mb-4 md:mb-0"
-            >
-                © 2024 Dotfiles Configurator PRECISION INSTRUMENTS
-            </div>
-            <div class="flex space-x-8">
-                <a
-                    class="font-['Inter'] text-[10px] uppercase tracking-widest text-[#545557] hover:text-[#a6acb3] underline-offset-4 hover:underline"
-                    href="#"
-                    >Privacy</a
-                >
-                <a
-                    class="font-['Inter'] text-[10px] uppercase tracking-widest text-[#545557] hover:text-[#a6acb3] underline-offset-4 hover:underline"
-                    href="#"
-                    >Terms</a
-                >
-                <a
-                    class="font-['Inter'] text-[10px] uppercase tracking-widest text-[#545557] hover:text-[#a6acb3] underline-offset-4 hover:underline"
-                    href="#"
-                    >Security</a
-                >
-            </div>
-        </footer>
+        <script>
+            const eyeOpen = document.getElementById("eye_icon_open");
+            const eyeClose = document.getElementById("eye_icon_close");
+            const peekBtn = document.getElementById("password_peek_btn");
+            const eyeOpen2 = document.getElementById("eye_icon_open2");
+            const eyeClose2 = document.getElementById("eye_icon_close2");
+            const peekBtn2 = document.getElementById("confirm_peek_btn");
+            const confirmInput = document.getElementById("confirm_input");
+            const passwordInput = document.getElementById("password_input");
+
+            peekBtn.onclick = function () {
+                eyeOpen.classList.toggle("hidden");
+                eyeClose.classList.toggle("hidden");
+
+                if (passwordInput.type == "password") {
+                    passwordInput.type = "text";
+                } else {
+                    passwordInput.type = "password";
+                }
+            };
+
+            peekBtn2.onclick = function () {
+                eyeOpen2.classList.toggle("hidden");
+                eyeClose2.classList.toggle("hidden");
+
+                if (confirmInput.type == "password") {
+                    confirmInput.type = "text";
+                } else {
+                    confirmInput.type = "password";
+                }
+            };
+        </script>
+
+      <script>
+          const userChoiceOfTheme = JSON.parse(
+              localStorage.getItem("user_theme"),
+          );
+
+          if (userChoiceOfTheme == "dark") {
+              document.body.classList.toggle(`dark`);
+              document.body.classList.toggle(`bg-background`);
+              document.body.classList.toggle(`bg-surface-bg`);
+          }
+      </script>
     </body>
 </html>

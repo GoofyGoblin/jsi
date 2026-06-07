@@ -26,9 +26,13 @@
                     <button
                         id="theme-changer"
                         onclick="
-                            document.body.classList.toggle(`dark`);
                             document.body.classList.toggle(`bg-background`);
+                            document.body.classList.toggle(`dark`);
                             document.body.classList.toggle(`bg-surface-bg`);
+                            localStorage.setItem(
+                                `user_theme`,
+                                JSON.stringify(`dark`),
+                            );
                         "
                     >
                         <svg
