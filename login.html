@@ -12,18 +12,7 @@
     <body class="bg-surface-bg">
         <header>
             <div class="absolute top-4 right-4">
-                <button
-                    id="theme-changer"
-                    onclick="
-                        document.body.classList.toggle(`dark`);
-                        document.body.classList.toggle(`bg-background`);
-                        document.body.classList.toggle(`bg-surface-bg`);
-                        localStorage.setItem(
-                            `user_theme`,
-                            JSON.stringify(`dark`),
-                        );
-                    "
-                >
+                <button id="theme-changer">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -281,18 +270,6 @@
                     passwordInput.type = "password";
                 }
             };
-        </script>
-
-        <script>
-            const userChoiceOfTheme = JSON.parse(
-                localStorage.getItem("user_theme"),
-            );
-
-            if (userChoiceOfTheme == "dark") {
-                document.body.classList.toggle(`dark`);
-                document.body.classList.toggle(`bg-background`);
-                document.body.classList.toggle(`bg-surface-bg`);
-            }
         </script>
     </body>
 </html>

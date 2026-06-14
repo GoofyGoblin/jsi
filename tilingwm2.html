@@ -4,8 +4,9 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>TilingWM Configurator</title>
-        <link href="./src/style.css" rel="stylesheet" />
-        <link href="./src/font.css" rel="stylesheet" />
+        <link href="src/style.css" rel="stylesheet" />
+        <link href="src/font.css" rel="stylesheet" />
+        <script src="src/theme.mts" type="module" defer></script>
     </head>
     <body class="min-h-screen font-body bg-surface-bg overflow-visible">
         <!-- mainheader start -->
@@ -23,18 +24,7 @@
             </div>
             <div class="flex flex-row gap-2 pr-5">
                 <div>
-                    <button
-                        id="theme-changer"
-                        onclick="
-                            document.body.classList.toggle(`bg-background`);
-                            document.body.classList.toggle(`dark`);
-                            document.body.classList.toggle(`bg-surface-bg`);
-                            localStorage.setItem(
-                                `user_theme`,
-                                JSON.stringify(`dark`),
-                            );
-                        "
-                    >
+                    <button id="theme-changer">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -118,6 +108,9 @@
                         <a href="#bindings">Keybindings</a>
                     </div>
                 </div>
+                <div class="m-2 mt-150 font-headline text-blue-400 hidden">
+                    <a href="texteditor2.html"> To text editor configuration</a>
+                </div>
             </aside>
             <!-- sidebar end -->
 
@@ -142,11 +135,15 @@
                             <div class="flex flex-row gap-8">
                                 <div>
                                     <input type="radio" name="termAnswer" />
-                                    <span>Alacritty</span>
+                                    <span>Kitty</span>
                                 </div>
                                 <div>
                                     <input type="radio" name="termAnswer" />
-                                    <span>Kitty</span>
+                                    <span>Wezterm</span>
+                                </div>
+                                <div>
+                                    <input type="radio" name="termAnswer" />
+                                    <span>Foot</span>
                                 </div>
                             </div>
                         </section>

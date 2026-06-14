@@ -6,6 +6,7 @@
         <title>Neovim Configurator</title>
         <link href="src/style.css" rel="stylesheet" />
         <link href="src/font.css" rel="stylesheet" />
+        <script src="src/theme.mts" defer></script>
     </head>
     <body class="min-h-screen font-body bg-surface-bg overflow-hidden">
         <!-- main header start -->
@@ -23,17 +24,7 @@
             </div>
             <div class="flex flex-row gap-2 pr-5">
                 <div>
-                    <button
-                        id="theme-changer"
-                        onclick="
-                              document.body.classList.toggle(`bg-background`);
-                              document.body.classList.toggle(`dark`);
-                              document.body.classList.toggle(`bg-surface-bg`);
-                              localStorage.setItem(
-                                  `user_theme`,
-                                  JSON.stringify(`dark`),
-                        "
-                    >
+                    <button id="theme-changer">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -90,36 +81,38 @@
         </header>
 
         <!-- middle canvas start -->
-        <div class="flex justify-center h-215">
+        <div class="flex justify-center h-215 dark:text-white">
             <main>
                 <!-- core plugins start -->
-                <div>
-                    <section>
-                        <h3 class="font-headline text-2xl">Core plugins</h3>
-                        <div class="main-section-tilingwm flex flex-row gap-40">
-                            <div>
-                                <input type="checkbox" name="" value="" />
-                                <span>telescope.nvim</span>
-                                <p class="text-[12px]">Lorem ipsum</p>
-                            </div>
-                            <div>
-                                <input type="checkbox" name="" value="" />
-                                <span>treesitter.nvim</span>
-                                <p class="text-[12px]">Lorem ipsum</p>
-                            </div>
+                <div class="mb-5">
+                    <h3 class="font-headline text-[15px]">Core plugins</h3>
+                    <div class="main-section-tilingwm flex flex-row gap-40">
+                        <div>
+                            <input type="checkbox" name="" value="" />
+                            <span>telescope.nvim</span>
+                            <p class="text-[12px]">Lorem ipsum</p>
                         </div>
-                    </section>
+                        <div>
+                            <input type="checkbox" name="" value="" />
+                            <span>treesitter.nvim</span>
+                            <p class="text-[12px]">Lorem ipsum</p>
+                        </div>
+                    </div>
                 </div>
                 <!-- core plugins end -->
 
                 <!-- language options start -->
-                <div>
-                    <section>
-                        <div>
-                            <h3>Language configuration</h3>
-                            <span>You can choose more than one...</span>
-                        </div>
+                <div class="mb-5">
+                    <div>
+                        <h3 class="font-headline text-[15px]">
+                            Language configuration
+                        </h3>
+                        <span class="text-[12px] font-headline"
+                            >You can choose more than one...</span
+                        >
+                    </div>
 
+                    <div class="main-section-tilingwm flex flex-row gap-5">
                         <div>
                             <input type="checkbox" name="" value="" />
                             <span>Python</span>
@@ -140,39 +133,39 @@
                             <input type="checkbox" name="" value="" />
                             <span>C++</span>
                         </div>
-                    </section>
+                    </div>
                 </div>
                 <!-- language options end -->
 
                 <!-- additional plugins start -->
-                <div>
-                    <section>
-                        <h3>Additional Plugins</h3>
+                <div class="mb-5">
+                    <h3 class="font-headline text-[15px]">
+                        Additional Plugins
+                    </h3>
+                    <div class="main-section-tilingwm flex flex-row gap-5">
                         <div>
-                            <div>
-                                <span>lualine.nvim</span>
-                                <input type="checkbox" name="" value="" />
-                            </div>
-
-                            <div>
-                                <span>nvim-tree.lua</span>
-                                <input type="checkbox" name="" value="" />
-                            </div>
-
-                            <div>
-                                <span>undotree.nvim</span>
-                                <input type="checkbox" name="" value="" />
-                            </div>
+                            <input type="checkbox" name="" value="" />
+                            <span>lualine.nvim</span>
                         </div>
-                    </section>
+
+                        <div>
+                            <input type="checkbox" name="" value="" />
+                            <span>nvim-tree.lua</span>
+                        </div>
+
+                        <div>
+                            <input type="checkbox" name="" value="" />
+                            <span>undotree.nvim</span>
+                        </div>
+                    </div>
                 </div>
                 <!-- additional plugins end -->
 
                 <!-- colorscheme start -->
-                <div>
+                <div class="mb-5">
                     <section>
-                        <h3>Colorschemes</h3>
-                        <div>
+                        <h3 class="font-headline text-[15px]">Colorschemes</h3>
+                        <div class="main-section-tilingwm flex flex-row gap-5">
                             <div>
                                 <input type="checkbox" name="" value="" />
                                 <span>Gruvbox</span>
@@ -195,9 +188,9 @@
                 <!-- colorscheme end -->
 
                 <!-- settings start -->
-                <div>
-                    <h3>General settings</h3>
-                    <div>
+                <div class="mb-5">
+                    <h3 class="font-headline text-[15px]">General settings</h3>
+                    <div class="main-section-tilingwm flex flex-col gap-4">
                         <div>
                             <input type="checkbox" name="" value="" />
                             <span>Line Numbers</span>
@@ -232,7 +225,7 @@
 
         <!-- bottom canvas start -->
         <div
-            class="flex flex-row gap-8 justify-end pr-20 bg-surface-topbar dark:bg-monolith-surface p-2 sticky left-0 right-0 bottom-0 font-headline"
+            class="flex flex-row gap-8 justify-end pr-20 bg-surface-topbar dark:bg-monolith-surface p-2 sticky left-0 right-0 bottom-0 font-headline hidden"
         >
             <button class="button-tilingwm">
                 <svg

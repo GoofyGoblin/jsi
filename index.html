@@ -7,7 +7,7 @@
         <link href="./src/font.css" rel="stylesheet" />
         <title>Dotfiles Configurator</title>
         <script src="src/index.mts" type="module" defer></script>
-        <script src="src/theme.mts"></script>
+        <script src="src/theme.mts" defer></script>
     </head>
     <body class="min-h-screen font-body pb-10 bg-surface-bg">
         <div class="flex flex-col">
@@ -20,14 +20,7 @@
                 </div>
                 <div class="flex flex-row gap-2 pr-5">
                     <div>
-                        <button
-                            id="theme-changer"
-                            onclick="
-                                document.body.classList.toggle(`dark`);
-                                document.body.classList.toggle(`bg-background`);
-                                document.body.classList.toggle(`bg-surface-bg`);
-                            "
-                        >
+                        <button id="theme-changer">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -285,21 +278,11 @@
             <div class="flex justify-end pr-20 md:pr-100">
                 <button
                     class="font-headline text-white bg-surface-tint p-4 rounded-lg hover:bg-[#bdcdfc] dark:bg-surface-container dark:hover:bg-surface-container-high dark:text-on-surface"
+                    id="submit_btn"
                 >
                     To Configuration Page
                 </button>
             </div>
         </div>
     </body>
-    <script>
-        const userChoiceOfTheme = JSON.parse(
-            localStorage.getItem("user_theme"),
-        );
-
-        if (userChoiceOfTheme == "dark") {
-            document.body.classList.toggle(`dark`);
-            document.body.classList.toggle(`bg-background`);
-            document.body.classList.toggle(`bg-surface-bg`);
-        }
-    </script>
 </html>

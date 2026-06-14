@@ -17,15 +17,17 @@ const accountMenu = document.getElementById(
 const signOutBtn = document.getElementById("signout-btn") as HTMLButtonElement;
 const usernameInfo = document.getElementById("username-info") as HTMLElement;
 
-const hyprlandBox = document.getElementById("hyprland_box") as HTMLElement;
-const swayBox = document.getElementById("sway_box") as HTMLElement;
-const i3Box = document.getElementById("i3_box") as HTMLElement;
-const bspwmBox = document.getElementById("bspwm_box") as HTMLElement;
+const hyprlandBox = document.getElementById(
+  "hyprland_box",
+) as HTMLButtonElement;
+const swayBox = document.getElementById("sway_box") as HTMLButtonElement;
+const i3Box = document.getElementById("i3_box") as HTMLButtonElement;
+const bspwmBox = document.getElementById("bspwm_box") as HTMLButtonElement;
 
-const nvimBox = document.getElementById("neovim_box") as HTMLElement;
-const emacsBox = document.getElementById("emacs_box") as HTMLElement;
-const codeBox = document.getElementById("code_box") as HTMLElement;
-const hxBox = document.getElementById("helix_box") as HTMLElement;
+const nvimBox = document.getElementById("neovim_box") as HTMLButtonElement;
+const emacsBox = document.getElementById("emacs_box") as HTMLButtonElement;
+const codeBox = document.getElementById("code_box") as HTMLButtonElement;
+const hxBox = document.getElementById("helix_box") as HTMLButtonElement;
 
 const submitBtn = document.getElementById("submit_btn") as HTMLElement;
 
@@ -45,38 +47,38 @@ signOutBtn.addEventListener("click", (e) => {
   window.location.href = "login.html";
 });
 
-const userSesh = JSON.parse(
-  localStorage.getItem(userSession.sessionKey) as any,
-);
+function getUserSession() {
+  const userSesh = JSON.parse(
+    localStorage.getItem(userSession.sessionKey) as any,
+  );
 
-usernameInfo.innerText = userSesh.username;
+  if (!userSesh) {
+    usernameInfo.innerText = "not logged in";
+    return;
+  }
+
+  usernameInfo.innerText = userSesh.username;
+}
+getUserSession();
 
 interface user_option {
   tilingWM: string | undefined;
   editor: string | undefined;
 }
 
+function boxButtonClicked(boxButton: HTMLButtonElement, tilingChoice: string) {
+  boxButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    currentTilingChoice = tilingChoice;
+    addTilingBoxBorder(boxButton);
+  });
+}
+
 function onTilingWMBoxClick() {
-  hyprlandBox.addEventListener("click", (e) => {
-    e.preventDefault();
-    currentTilingChoice = "hyprland";
-    addTilingBoxBorder(hyprlandBox);
-  });
-  swayBox.addEventListener("click", (e) => {
-    e.preventDefault();
-    currentTilingChoice = "sway";
-    addTilingBoxBorder(swayBox);
-  });
-  i3Box.addEventListener("click", (e) => {
-    e.preventDefault();
-    currentTilingChoice = "i3";
-    addTilingBoxBorder(i3Box);
-  });
-  bspwmBox.addEventListener("click", (e) => {
-    e.preventDefault();
-    currentTilingChoice = "bspwm";
-    addTilingBoxBorder(bspwmBox);
-  });
+  boxButtonClicked(hyprlandBox, "hyprland");
+  boxButtonClicked(swayBox, "i3Box");
+  boxButtonClicked(i3Box, "i3");
+  boxButtonClicked(bspwmBox, "bspwm");
 }
 onTilingWMBoxClick();
 
