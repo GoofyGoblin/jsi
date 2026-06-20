@@ -7,16 +7,6 @@ let currentEditorChoice: string | undefined;
 let boxClicked: boolean = true;
 let editorBoxClicked: boolean = true;
 
-const sourceBtn = document.getElementById(
-  "sourcecode-btn",
-) as HTMLButtonElement;
-const accountBtn = document.getElementById("account-btn") as HTMLButtonElement;
-const accountMenu = document.getElementById(
-  "account-menu",
-) as HTMLButtonElement;
-const signOutBtn = document.getElementById("signout-btn") as HTMLButtonElement;
-const usernameInfo = document.getElementById("username-info") as HTMLElement;
-
 const hyprlandBox = document.getElementById(
   "hyprland_box",
 ) as HTMLButtonElement;
@@ -30,36 +20,6 @@ const codeBox = document.getElementById("code_box") as HTMLButtonElement;
 const hxBox = document.getElementById("helix_box") as HTMLButtonElement;
 
 const submitBtn = document.getElementById("submit_btn") as HTMLElement;
-
-sourceBtn.addEventListener("click", () => {
-  window.open("https://github.com/GoofyGoblin/jsi");
-});
-
-accountBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  accountMenu.classList.toggle("hidden");
-});
-
-signOutBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  localStorage.removeItem(userSession.sessionKey);
-  localStorage.removeItem(userSession.userInfoKey);
-  window.location.href = "login.html";
-});
-
-function getUserSession() {
-  const userSesh = JSON.parse(
-    localStorage.getItem(userSession.sessionKey) as any,
-  );
-
-  if (!userSesh) {
-    usernameInfo.innerText = "not logged in";
-    return;
-  }
-
-  usernameInfo.innerText = userSesh.username;
-}
-getUserSession();
 
 interface user_option {
   tilingWM: string | undefined;

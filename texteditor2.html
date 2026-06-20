@@ -7,20 +7,16 @@
         <link href="src/style.css" rel="stylesheet" />
         <link href="src/font.css" rel="stylesheet" />
         <script src="src/theme.mts" defer></script>
+        <script src="src/text_editor.mts" defer></script>
+        <script src="src/account.mts" type="module" defer></script>
     </head>
-    <body class="min-h-screen font-body bg-surface-bg overflow-hidden">
+    <body class="min-h-screen font-body bg-surface-bg prevent-select">
         <!-- main header start -->
         <header
-            class="sticky top-0 left-0 right-0 h-16 bg-surface-topbar dark:bg-monolith-surface flex justify-between items-center z-100"
+            class="sticky w-full z-100 top-0 left-0 right-0 h-16 bg-surface-topbar dark:bg-monolith-surface flex justify-between items-center"
         >
             <div class="pl-5">
-                <h1 class="font-headline text-3xl dark:text-white">
-                    Neovim
-                    <span
-                        class="bg-surface-tint text-white rounded-lg dark:text-surface-tint dark:bg-monolith-surface"
-                        >Configurator</span
-                    >
-                </h1>
+                <h1 class="font-headline text-4xl dark:text-white">.cfg</h1>
             </div>
             <div class="flex flex-row gap-2 pr-5">
                 <div>
@@ -58,9 +54,40 @@
                             />
                         </svg>
                     </button>
+
+                    <div
+                        id="account-menu"
+                        class="hidden group-hover:block group-focus:block absolute top-full right-0 mt-2 w-56 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-100 rounded-lg shadow-lg z-50 ring-1 ring-black/5"
+                        role="menu"
+                        aria-label="Account menu"
+                    >
+                        <div class="px-4 py-3 text-sm">
+                            <div
+                                class="text-xs text-gray-500 dark:text-gray-400"
+                            >
+                                Signed in as
+                            </div>
+                            <div class="font-medium" id="username-info">
+                                Jane Doe
+                            </div>
+                        </div>
+                        <button
+                            class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            role="menuitem"
+                        >
+                            Settings
+                        </button>
+                        <button
+                            class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            role="menuitem"
+                            id="signout-btn"
+                        >
+                            Sign out
+                        </button>
+                    </div>
                 </div>
                 <div>
-                    <button id="sourcecode-btn">
+                    <a href="https://github.com/GoofyGoblin/jsi">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -75,25 +102,35 @@
                                 d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"
                             />
                         </svg>
-                    </button>
+                    </a>
                 </div>
             </div>
         </header>
 
         <!-- middle canvas start -->
-        <div class="flex justify-center h-215 dark:text-white">
+        <div class="flex justify-center dark:text-white">
             <main>
                 <!-- core plugins start -->
                 <div class="mb-5">
                     <h3 class="font-headline text-[15px]">Core plugins</h3>
                     <div class="main-section-tilingwm flex flex-row gap-40">
                         <div>
-                            <input type="checkbox" name="" value="" />
+                            <input
+                                type="checkbox"
+                                name=""
+                                value=""
+                                id="telescope-check-box"
+                            />
                             <span>telescope.nvim</span>
                             <p class="text-[12px]">Lorem ipsum</p>
                         </div>
                         <div>
-                            <input type="checkbox" name="" value="" />
+                            <input
+                                type="checkbox"
+                                name=""
+                                value=""
+                                id="tree-sitter-check-box"
+                            />
                             <span>treesitter.nvim</span>
                             <p class="text-[12px]">Lorem ipsum</p>
                         </div>
@@ -114,23 +151,48 @@
 
                     <div class="main-section-tilingwm flex flex-row gap-5">
                         <div>
-                            <input type="checkbox" name="" value="" />
+                            <input
+                                type="checkbox"
+                                name=""
+                                value=""
+                                id="python-lang"
+                            />
                             <span>Python</span>
                         </div>
                         <div>
-                            <input type="checkbox" name="" value="" />
+                            <input
+                                type="checkbox"
+                                name=""
+                                value=""
+                                id="typescript-lang"
+                            />
                             <span>TypeScript/JavaScript</span>
                         </div>
                         <div>
-                            <input type="checkbox" name="" value="" />
+                            <input
+                                type="checkbox"
+                                name=""
+                                value=""
+                                id="haskell-lang"
+                            />
                             <span>Haskell</span>
                         </div>
                         <div>
-                            <input type="checkbox" name="" value="" />
+                            <input
+                                type="checkbox"
+                                name=""
+                                value=""
+                                id="c-lang"
+                            />
                             <span>C</span>
                         </div>
                         <div>
-                            <input type="checkbox" name="" value="" />
+                            <input
+                                type="checkbox"
+                                name=""
+                                value=""
+                                id="cpp-lang"
+                            />
                             <span>C++</span>
                         </div>
                     </div>
@@ -144,17 +206,32 @@
                     </h3>
                     <div class="main-section-tilingwm flex flex-row gap-5">
                         <div>
-                            <input type="checkbox" name="" value="" />
+                            <input
+                                type="checkbox"
+                                name=""
+                                value=""
+                                id="lualine-plugin"
+                            />
                             <span>lualine.nvim</span>
                         </div>
 
                         <div>
-                            <input type="checkbox" name="" value="" />
+                            <input
+                                type="checkbox"
+                                name=""
+                                value=""
+                                id="nvim-tree-plugin"
+                            />
                             <span>nvim-tree.lua</span>
                         </div>
 
                         <div>
-                            <input type="checkbox" name="" value="" />
+                            <input
+                                type="checkbox"
+                                name=""
+                                value=""
+                                id="undotree-plugin"
+                            />
                             <span>undotree.nvim</span>
                         </div>
                     </div>
@@ -167,19 +244,39 @@
                         <h3 class="font-headline text-[15px]">Colorschemes</h3>
                         <div class="main-section-tilingwm flex flex-row gap-5">
                             <div>
-                                <input type="checkbox" name="" value="" />
+                                <input
+                                    type="radio"
+                                    name="colorschemes"
+                                    value="gruvbox"
+                                    id="gruvbox-radio"
+                                />
                                 <span>Gruvbox</span>
                             </div>
                             <div>
-                                <input type="checkbox" name="" value="" />
+                                <input
+                                    type="radio"
+                                    name="colorschemes"
+                                    value="catpuccin"
+                                    id="catpuccin-radio"
+                                />
                                 <span>Catpuccin</span>
                             </div>
                             <div>
-                                <input type="checkbox" name="" value="" />
+                                <input
+                                    type="radio"
+                                    name="colorschemes"
+                                    value="tokyonight"
+                                    id="tokyonight-radio"
+                                />
                                 <span>Tokyonight</span>
                             </div>
                             <div>
-                                <input type="checkbox" name="" value="" />
+                                <input
+                                    type="radio"
+                                    name="colorschemes"
+                                    value="onedark"
+                                    id="onedark-radio"
+                                />
                                 <span>Onedark</span>
                             </div>
                         </div>
@@ -192,29 +289,103 @@
                     <h3 class="font-headline text-[15px]">General settings</h3>
                     <div class="main-section-tilingwm flex flex-col gap-4">
                         <div>
-                            <input type="checkbox" name="" value="" />
+                            <input
+                                type="checkbox"
+                                name=""
+                                value=""
+                                id="line-numbers-checkbox"
+                            />
                             <span>Line Numbers</span>
-                            <p>If you don't enable this you're kinda weird</p>
+                            <p class="text-gray-500">
+                                If you don't enable this you're kinda weird
+                            </p>
                         </div>
                         <div>
-                            <input type="checkbox" name="" value="" />
+                            <input
+                                type="checkbox"
+                                name=""
+                                value=""
+                                id="relative-line-numbers-checkbox"
+                            />
                             <span>Relative Line Numbers</span>
                         </div>
                         <div>
-                            <input type="checkbox" name="" value="" />
+                            <input
+                                type="checkbox"
+                                name=""
+                                value=""
+                                id="line-break-checkbox"
+                            />
                             <span>Line break</span>
                         </div>
                         <div>
-                            <input type="checkbox" name="" value="" />
+                            <input
+                                type="checkbox"
+                                name=""
+                                value=""
+                                id="status-line-checkbox"
+                            />
                             <span>Status line</span>
                         </div>
-                        <div>
+                        <div class="flex items-center gap-4">
                             <span>Leader key</span>
-                            <input type="text" name="" value="" />
+                            <button id="record-btn">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    id="recordicon-slash"
+                                    class="size-6 hover:text-red-400"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M12 18.75H4.5a2.25 2.25 0 0 1-2.25-2.25V9m12.841 9.091L16.5 19.5m-1.409-1.409c.407-.407.659-.97.659-1.591v-9a2.25 2.25 0 0 0-2.25-2.25h-9c-.621 0-1.184.252-1.591.659m12.182 12.182L2.909 5.909M1.5 4.5l1.409 1.409"
+                                    />
+                                </svg>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    id="recordicon"
+                                    class="size-6 text-red-400 hidden"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"
+                                    />
+                                </svg>
+                            </button>
+                            <div id="key-display" class="text-gray-500">
+                                Space
+                            </div>
                         </div>
-                        <div>
+                        <span
+                            class="text-[12px] text-gray-500 hover:text-blue-300"
+                            id="side-note-text"
+                            >Keep in mind that there are some keys that can't be
+                            used as a leader key</span
+                        >
+                        <div class="hidden text-gray-500" id="side-note-doc">
+                            <h3>1. Pure modifier keys</h3>
+                            <p>ctrl, meta, alt, shift</p>
+                            <h3>2. Systems and terminal keyds</h3>
+                            <p>ctrl + c, ctrl + z, ctrl + q, ctrl + s</p>
+                            <h3>3.Dead keys</h3>
+                        </div>
+                        <div class="flex flex-row gap-2 items-center">
                             <span>Tab Width</span>
-                            <input type="number" name="" value="" />
+                            <input
+                                type="number"
+                                name=""
+                                value=""
+                                class="rounded-sm no-input-number-spin dark:bg-gray-700 dark:text-white p-1 w-15"
+                            />
                         </div>
                     </div>
                 </div>
@@ -225,7 +396,7 @@
 
         <!-- bottom canvas start -->
         <div
-            class="flex flex-row gap-8 justify-end pr-20 bg-surface-topbar dark:bg-monolith-surface p-2 sticky left-0 right-0 bottom-0 font-headline hidden"
+            class="flex flex-row gap-8 justify-end pr-20 bg-surface-topbar dark:bg-monolith-surface sticky left-0 right-0 bottom-0 font-headline p-2"
         >
             <button class="button-tilingwm">
                 <svg

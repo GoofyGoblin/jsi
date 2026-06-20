@@ -43,3 +43,14 @@
 .main-section-tilingwm {
     @apply bg-surface-topbar p-8 font-headline rounded-lg dark:text-surface-bg dark:bg-surface-container;
 }
+
+.no-input-number-spin {
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
