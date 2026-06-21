@@ -54,3 +54,27 @@
     -moz-appearance: textfield;
     appearance: textfield;
 }
+
+.picker-clean {
+    border: none !important;
+    background: none !important;
+    padding: 0 !important;
+    outline: none !important;
+}
+
+/* Xóa viền đen bên trong swatch (Chrome, Safari, Edge) */
+.picker-clean::-webkit-color-swatch {
+    border: none !important;
+    padding: 0 !important;
+}
+
+.picker-clean::-webkit-color-swatch-wrapper {
+    padding: 0 !important;
+}
+
+/* Xóa viền đen bên trong swatch (Firefox) */
+.picker-clean::-moz-color-swatch {
+    border: none !important;
+    colorPickerMap[key] = e.target.value;
+    padding: 0 !important;
+}

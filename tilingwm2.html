@@ -168,18 +168,36 @@
                                 Choose your main terminal
                             </h4>
                         </div>
-                        <section class="main-section-tilingwm">
+                        <section
+                            id="terminal-section"
+                            class="main-section-tilingwm"
+                        >
                             <div class="flex flex-row gap-8">
                                 <div>
-                                    <input type="radio" name="termAnswer" />
+                                    <input
+                                        type="radio"
+                                        name="termAnswer"
+                                        value="kitty"
+                                        id="term-kitty"
+                                    />
                                     <span>Kitty</span>
                                 </div>
                                 <div>
-                                    <input type="radio" name="termAnswer" />
+                                    <input
+                                        type="radio"
+                                        name="termAnswer"
+                                        value="wezterm"
+                                        id="term-wezterm"
+                                    />
                                     <span>Wezterm</span>
                                 </div>
                                 <div>
-                                    <input type="radio" name="termAnswer" />
+                                    <input
+                                        type="radio"
+                                        name="termAnswer"
+                                        value="foot"
+                                        id="term-foot"
+                                    />
                                     <span>Foot</span>
                                 </div>
                             </div>
@@ -200,9 +218,9 @@
                             </h4>
                         </div>
                         <section class="main-section-tilingwm">
-                            <div class="flex justify-center">
+                            <div class="flex justify-center items-center">
                                 <button
-                                    class="border border-dashed p-2 hover:text-monolith-accent w-full mb-5"
+                                    class="border border-dashed p-2 hover:text-monolith-accent w-full"
                                     id="add-monitor"
                                 >
                                     + Add a new monitor
@@ -215,7 +233,7 @@
                                     class="hidden monitor fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
                                 >
                                     <div
-                                        class="bg-white dark:bg-monolith-surface p-4 rounded shadow-lg flex flex-row items-end gap-3 text-sm dark:text-white"
+                                        class="bg-white dark:bg-monolith-surface p-4 rounded-md shadow-lg flex flex-row items-end gap-3 text-sm dark:text-white"
                                     >
                                         <label class="flex flex-col"
                                             >Name
@@ -247,6 +265,18 @@
                                                     type="number"
                                                     class="border p-1 dark:bg-gray-800 rounded-sm w-14 no-input-number-spin" /></span
                                         ></label>
+                                        <label class="flex flex-col">
+                                            Refresh Rates
+                                            <span
+                                                class="flex items-center gap-1"
+                                            >
+                                                <input
+                                                    type="number"
+                                                    class="border p-1 dark:bg-gray-800 rounded-sm w-20 no-input-number-spin"
+                                                    id="mon-hz"
+                                                />
+                                            </span>
+                                        </label>
                                         <button
                                             class="bg-blue-500 text-white px-3 py-1 rounded"
                                             id="add-new-monitor"
@@ -264,69 +294,12 @@
                             </div>
 
                             <div
-                                class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end"
-                            >
-                                <div>
-                                    <label
-                                        class="block text-sm font-medium mb-1"
-                                        >Resolution</label
-                                    >
-                                    <select
-                                        class="w-full text-sm bg-[#f7f9fc] rounded-sm p-1 dark:bg-surface-container-highest dark:text-white border-none"
-                                    >
-                                        <option>3840 x 2160 (16:9)</option>
-                                        <option>2560 x 1440 (16:9)</option>
-                                        <option>1920 x 1080 (16:9)</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label
-                                        class="block text-sm font-medium mb-1"
-                                        >Refresh Rate</label
-                                    >
-                                    <div class="flex items-center gap-2">
-                                        <input
-                                            inputmode="decimal"
-                                            class="w-full text-sm bg-[#f7f9fc] rounded-sm p-1 dark:bg-surface-container-highest dark:text-white border-none"
-                                        />
-                                        <span class="text-gray-500 text-sm"
-                                            >Hz</span
-                                        >
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label
-                                        class="block text-sm font-medium mb-1"
-                                        >Position</label
-                                    >
-                                    <div class="flex items-center gap-2">
-                                        <input
-                                            inputmode="decimal"
-                                            class="w-full text-sm bg-[#f7f9fc] rounded-sm p-1 dark:bg-surface-container-highest dark:text-white border-none"
-                                        />
-                                        <span class="text-gray-500">x</span>
-                                        <input
-                                            inputmode="decimal"
-                                            class="w-full text-sm bg-[#f7f9fc] rounded-sm p-1 dark:bg-surface-container-highest dark:text-white border-none"
-                                        />
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="text-sm font-medium mb-1"
-                                        >Name</label
-                                    >
-                                    <div class="flex items-center gap-2">
-                                        <span
-                                            class="dark:text-white bg-[#f7f9fc] dark:bg-[#20262c] h-7 p-2 rounded-sm flex items-center"
-                                            >e-DP1</span
-                                        >
-                                    </div>
-                                </div>
-                            </div>
+                                class="flex flex-col"
+                                id="display-new-monitors"
+                            ></div>
                         </section>
                     </div>
+
                     <!-- display part end -->
 
                     <!-- colors part start -->
@@ -351,37 +324,73 @@
                                             class="font-medium dark:text-white"
                                             >Focused</label
                                         >
-                                        <span
-                                            class="text-gray-600 font-mono dark:text-gray-300"
-                                            >#FFFFFF</span
-                                        >
+                                        <div class="flex items-center gap-2">
+                                            <input
+                                                type="color"
+                                                id="focused-color"
+                                                class="rounded-md w-4 h-4 picker-clean"
+                                                value="#ffffff"
+                                            />
+                                            <span
+                                                class="text-gray-600 font-mono dark:text-gray-300"
+                                                id="focused-color-text"
+                                                >#ffffff</span
+                                            >
+                                        </div>
 
                                         <label
                                             class="font-medium dark:text-white"
                                             >Focused Inactive</label
                                         >
-                                        <span
-                                            class="text-gray-600 font-mono dark:text-gray-300"
-                                            >#FFFFFF</span
-                                        >
+                                        <div class="flex items-center gap-2">
+                                            <input
+                                                type="color"
+                                                id="focused-inactive-color"
+                                                class="rounded-md w-4 h-4 picker-clean"
+                                                value="#ffffff"
+                                            />
+                                            <span
+                                                class="text-gray-600 font-mono dark:text-gray-300"
+                                                id="focused-inactive-color-text"
+                                                >#ffffff</span
+                                            >
+                                        </div>
 
                                         <label
                                             class="font-medium dark:text-white"
                                             >Inactive</label
                                         >
-                                        <span
-                                            class="text-gray-600 font-mono dark:text-gray-300"
-                                            >#FFFFFF</span
-                                        >
+                                        <div class="flex items-center gap-2">
+                                            <input
+                                                type="color"
+                                                id="inactive-color"
+                                                class="rounded-md w-4 h-4 picker-clean"
+                                                value="#ffffff"
+                                            />
+                                            <span
+                                                class="text-gray-600 font-mono dark:text-gray-300"
+                                                id="inactive-color-text"
+                                                >#ffffff</span
+                                            >
+                                        </div>
 
                                         <label
                                             class="font-medium dark:text-white"
                                             >Urgent</label
                                         >
-                                        <span
-                                            class="text-gray-600 font-mono dark:text-gray-300"
-                                            >#FFFFFF</span
-                                        >
+                                        <div class="flex items-center gap-2">
+                                            <input
+                                                type="color"
+                                                id="urgent-color"
+                                                class="rounded-md w-4 h-4 picker-clean"
+                                                value="#ffffff"
+                                            />
+                                            <span
+                                                class="text-gray-600 font-mono dark:text-gray-300"
+                                                id="urgent-color-text"
+                                                >#ffffff</span
+                                            >
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -401,13 +410,20 @@
                                 Configure your keyboard settings
                             </h4>
                         </div>
-                        <section class="main-section-tilingwm">
+                        <section
+                            id="keyboard-section"
+                            class="main-section-tilingwm"
+                        >
                             <div>
                                 <div class="">
-                                    <label for="">Repeat Rate</label>
+                                    <label for="kb-repeat-rate"
+                                        >Repeat Rate</label
+                                    >
                                     <input
+                                        id="kb-repeat-rate"
+                                        type="number"
                                         inputmode="decimal"
-                                        name=""
+                                        name="repeatRate"
                                         value=""
                                         class="text-sm bg-[#f7f9fc] rounded-sm p-1 dark:bg-surface-container-highest dark:text-white border-none"
                                     />
@@ -419,21 +435,42 @@
                                     <label for="">Layout Options</label>
                                     <div>
                                         <input
+                                            id="kb-layout-qwerty"
                                             type="radio"
                                             name="keyboardValue"
-                                            value=""
+                                            value="qwerty"
                                         />
                                         <span>QWERTY</span>
                                     </div>
                                     <div>
                                         <input
+                                            id="kb-layout-dvorak"
                                             type="radio"
                                             name="keyboardValue"
-                                            value=""
+                                            value="dvorak"
                                         />
                                         <span>DVORAK</span>
                                     </div>
                                 </div>
+                            </div>
+                            <div>Choose your mod key</div>
+                            <div>
+                                <span>
+                                    Alt
+                                    <input
+                                        type="radio"
+                                        name="modkeyInput"
+                                        value="alt"
+                                    />
+                                </span>
+                                <span>
+                                    Win
+                                    <input
+                                        type="radio"
+                                        name="modkeyInput"
+                                        value="win"
+                                    />
+                                </span>
                             </div>
                         </section>
                     </div>
@@ -452,22 +489,164 @@
                             </h4>
                         </div>
                         <section class="main-section-tilingwm">
-                            <div>
-                                <div>Action</div>
-                                <div>Keybind</div>
-                            </div>
-
                             <!-- container that holds the keybinds -->
                             <div></div>
 
                             <div class="flex justify-center w-full">
                                 <button
-                                    class="border border-dashed p-2 hover:text-monolith-accent"
+                                    class="border border-dashed p-2 hover:text-monolith-accent w-full"
+                                    id="add-new-bind-btn"
                                 >
                                     + Add a new binding
                                 </button>
                             </div>
                         </section>
+                        <div class="flex justify-center">
+                            <div
+                                id="keybind-prompt"
+                                class="hidden monitor fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+                            >
+                                <div
+                                    class="bg-white dark:bg-monolith-surface p-4 rounded-md shadow-lg flex flex-row items-end gap-3 text-sm dark:text-white"
+                                >
+                                    <label class="flex flex-col"
+                                        >Action
+                                        <!--   border p-1 dark:bg-gray-800 rounded-sm w-24 -->
+                                        <select
+                                            id="kb-action-options"
+                                            class="border p-1 dark:bg-gray-800 rounded-sm w-full pr-10"
+                                        >
+                                            <option>kill</option>
+                                            <option>fullscreen</option>
+                                            <option>floating</option>
+                                            <option>sticky</option>
+                                            <option>focus left</option>
+                                            <option>focus right</option>
+                                            <option>focus up</option>
+                                            <option>focus down</option>
+                                            <option>
+                                                move container to workspace [1]
+                                            </option>
+                                            <option>
+                                                move container to workspace [2]
+                                            </option>
+                                            <option>
+                                                move container to workspace [3]
+                                            </option>
+                                            <option>
+                                                move container to workspace [4]
+                                            </option>
+                                            <option>
+                                                move container to workspace [5]
+                                            </option>
+                                            <option>
+                                                move container to workspace [6]
+                                            </option>
+                                            <option>
+                                                move container to workspace [7]
+                                            </option>
+                                            <option>
+                                                move container to workspace [8]
+                                            </option>
+                                            <option>
+                                                move container to workspace [9]
+                                            </option>
+                                            <option>
+                                                move container to output left
+                                            </option>
+                                            <option>
+                                                move container to output right
+                                            </option>
+                                            <option>
+                                                move container to output up
+                                            </option>
+                                            <option>
+                                                move container to output down
+                                            </option>
+                                            <option>
+                                                move container to scratchpad
+                                            </option>
+                                            <option>layout default</option>
+                                            <option>layout tabbed</option>
+                                            <option>layout stacking</option>
+                                            <option>layout splitv</option>
+                                            <option>layout splith</option>
+                                            <option>workspace [1]</option>
+                                            <option>workspace [2]</option>
+                                            <option>workspace [3]</option>
+                                            <option>workspace [4]</option>
+                                            <option>workspace [5]</option>
+                                            <option>workspace [6]</option>
+                                            <option>workspace [7]</option>
+                                            <option>workspace [8]</option>
+                                            <option>workspace [9]</option>
+                                            <option>workspace [10]</option>
+                                            <option>scratchpad show</option>
+                                            <option>reload</option>
+                                            <option>exit</option>
+                                        </select>
+                                    </label>
+                                    <label class="flex flex-col">
+                                        Keybind
+                                        <span
+                                            class="flex items-center gap-4 p-1 pr-5"
+                                        >
+                                            Modkey +
+                                            <button id="record-btn">
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke-width="1.5"
+                                                    stroke="currentColor"
+                                                    id="recordicon-slash"
+                                                    class="size-6 hover:text-red-400"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M12 18.75H4.5a2.25 2.25 0 0 1-2.25-2.25V9m12.841 9.091L16.5 19.5m-1.409-1.409c.407-.407.659-.97.659-1.591v-9a2.25 2.25 0 0 0-2.25-2.25h-9c-.621 0-1.184.252-1.591.659m12.182 12.182L2.909 5.909M1.5 4.5l1.409 1.409"
+                                                    />
+                                                </svg>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke-width="1.5"
+                                                    stroke="currentColor"
+                                                    id="recordicon"
+                                                    class="size-6 text-red-400 hidden"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"
+                                                    />
+                                                </svg>
+                                            </button>
+                                            <div
+                                                id="key-display"
+                                                class="text-gray-500"
+                                            >
+                                                None
+                                            </div>
+                                        </span>
+                                    </label>
+                                    <button
+                                        class="bg-blue-500 text-white px-3 py-1 rounded"
+                                        id="add-new-keybind"
+                                    >
+                                        Add
+                                    </button>
+                                    <button
+                                        class="bg-gray-300 dark:bg-gray-700 px-3 py-1 rounded"
+                                        id="cancel-new-keybind"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- keybindings part end -->
                 </div>
