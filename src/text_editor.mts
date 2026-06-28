@@ -74,14 +74,14 @@ const tokyonightRadio = document.getElementById(
 const onedarkRadio = document.getElementById(
   "onedark-radio",
 ) as HTMLInputElement;
-const languages: Record<string, boolean> = {
+let languages: Record<string, boolean> = {
   c: false,
   haskell: false,
   python: false,
   typescript: false,
   cpp: false,
 };
-const plugins: Record<string, boolean | string> = {
+let plugins: Record<string, boolean | string> = {
   colorscheme: "",
   lualine: false,
   nvimtree: false,
@@ -89,7 +89,7 @@ const plugins: Record<string, boolean | string> = {
   treesitter: false,
   undotree: false,
 };
-const generalSettings: Record<string, boolean | string> = {
+let generalSettings: Record<string, boolean | string> = {
   leaderKey: " ",
   lineNumbers: false,
   relativeLineNumbers: false,
@@ -157,77 +157,47 @@ function checkBoxCheck(event: any, stateObj: any, key?: string) {
   console.log(generalSettings, plugins, languages);
 }
 
-telescopeCheckBox.addEventListener("change", (e: any) =>
-  checkBoxCheck(e, plugins, "telescope"),
-);
+const pluginCheckBoxes = new Map([
+  [telescopeCheckBox, "telescope"],
+  [treeSitterCheckBox, "treesitter"],
+  [nvimTreeCheckBox, "nvimtree"],
+  [undotreeCheckBox, "undotree"],
+  [gruvboxRadio, "colorscheme"],
+  [catpuccinRadio, "colorscheme"],
+  [tokyonightRadio, "colorscheme"],
+  [onedarkRadio, "colorscheme"],
+])
 
-treeSitterCheckBox.addEventListener("change", (e: any) =>
-  checkBoxCheck(e, plugins, "treesitter"),
-);
+const languagesCheckBoxes = new Map([
+  [cCheckBox, "c"],
+  [haskellCheckBox, "haskell"],
+  [pythonCheckBox, "python"],
+  [tsLangCheckBox, "typescript"],
+  [cppCheckBox, "cpp"],
+])
 
-lualineCheckBox.addEventListener("change", (e: any) =>
-  checkBoxCheck(e, plugins, "lualine"),
-);
+const generalSettingsCheckBoxes = new Map([
+  [lineBreakCheckBox, "lineBreak"],
+  [lineNumbersCheckBox, "lineNumbers"],
+  [relativeLineNumbersCheckBox, "relativeLineNumbers"],
+  [statusLineCheckBox, "statusLine"],
+])
 
-nvimTreeCheckBox.addEventListener("change", (e: any) =>
-  checkBoxCheck(e, plugins, "nvimtree"),
-);
+function checkBoxAddEventListener(element: any, string: any, type: any) {
+  element.addEventListener("change", (e: any) => {
+    checkBoxCheck(e, type, string)
+  })
+}
 
-undotreeCheckBox.addEventListener("change", (e: any) =>
-  checkBoxCheck(e, plugins, "undotree"),
-);
+function callElementMaps(map: any, type: any) {
+  for (const [key, value] of map) {
+    checkBoxAddEventListener(key, value, type)
+  }
+}
 
-cCheckBox.addEventListener("change", (e: any) =>
-  checkBoxCheck(e, languages, "c"),
-);
-
-haskellCheckBox.addEventListener("change", (e: any) =>
-  checkBoxCheck(e, languages, "haskell"),
-);
-
-pythonCheckBox.addEventListener("change", (e: any) =>
-  checkBoxCheck(e, languages, "python"),
-);
-
-tsLangCheckBox.addEventListener("change", (e: any) =>
-  checkBoxCheck(e, languages, "typescript"),
-);
-
-cppCheckBox.addEventListener("change", (e: any) =>
-  checkBoxCheck(e, languages, "cpp"),
-);
-
-lineNumbersCheckBox.addEventListener("change", (e: any) =>
-  checkBoxCheck(e, generalSettings, "lineNumbers"),
-);
-
-relativeLineNumbersCheckBox.addEventListener("change", (e: any) =>
-  checkBoxCheck(e, generalSettings, "relativeLineNumbers"),
-);
-
-lineBreakCheckBox.addEventListener("change", (e: any) =>
-  checkBoxCheck(e, generalSettings, "lineBreak"),
-);
-
-statusLineCheckBox.addEventListener("change", (e: any) =>
-  checkBoxCheck(e, generalSettings, "statusLine"),
-);
-
-gruvboxRadio.addEventListener("change", (e: any) =>
-  checkBoxCheck(e, plugins, "colorscheme"),
-);
-
-catpuccinRadio.addEventListener("change", (e: any) =>
-  checkBoxCheck(e, plugins, "colorscheme"),
-);
-
-tokyonightRadio.addEventListener("change", (e: any) =>
-  checkBoxCheck(e, plugins, "colorscheme"),
-);
-
-onedarkRadio.addEventListener("change", (e: any) =>
-  checkBoxCheck(e, plugins, "colorscheme"),
-);
+callElementMaps(pluginCheckBoxes, plugins)
+callElementMaps(languagesCheckBoxes, languages)
+callElementMaps(generalSettingsCheckBoxes, generalSettings)
 
 saveBtn?.addEventListener("click", (e) => {
   e.preventDefault();
@@ -242,10 +212,52 @@ saveBtn?.addEventListener("click", (e) => {
   console.log("uploaded, maybe ig")
 })
 
+function restoreSavedConfiguration(checkBoxes: HTMLInputElement, checkBoxesType: string, userConfig: any, type: string) {
+  if (type == "generalSettings") {
+    for (const [key, value] of Object.entries(userConfig)) {
+      if (checkBoxesType.includes(key)) {
+        checkBoxes.checked = value as any;
+      }
+      userConfig.leaderKey == " " ? keyDisplay.textContent = "Space" : keyDisplay.textContent = userConfig.leaderKey;
+    }
+    generalSettings = userConfig;
+    return;
+  }
+
+  if (type == "languages") {
+    for (const [key, value] of Object.entries(userConfig)) {
+      if (checkBoxesType.includes(key)) {
+        checkBoxes.checked = value as any;
+      }
+    }
+    languages = userConfig
+    console.log(languages, userConfig);
+    return;
+  }
+
+  if (type == "plugins") {
+    for (const [key, value] of Object.entries(userConfig)) {
+      if (checkBoxesType.includes(key)) {
+        checkBoxes.checked = value as any;
+      }
+    }
+  }
+}
+
+function callRestoreSavedConfiguration(map: any, userConfig: any, type: any) {
+  for (const [key, value] of map) {
+    restoreSavedConfiguration(key, value, userConfig, type)
+  }
+}
 
 importBtn?.addEventListener("click", async (e) => {
   e.preventDefault();
-  const userId = JSON.parse(localStorage.getItem("userId") as any);
+  const userId = JSON.parse(localStorage.getItem("userId") as string);
   const configType = "editor"
   await getUploadedSubCollection(userId, configType);
+  console.log(JSON.parse(localStorage.getItem("user_config") as any))
+  const userConfig = JSON.parse(localStorage.getItem("user_config") as any)
+  callRestoreSavedConfiguration(generalSettingsCheckBoxes, userConfig.generalSettings, "generalSettings")
+  callRestoreSavedConfiguration(languagesCheckBoxes, userConfig.languages, "languages")
 })
+
