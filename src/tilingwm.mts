@@ -1,3 +1,5 @@
+import { uploadSubcollection, getUploadedSubCollection } from "./saveConfigSettings.mts";
+
 // Monitor variables
 const addNewMonitor = document.getElementById(
   "add-monitor",
@@ -66,6 +68,9 @@ const keyDisplay = document.getElementById("key-display") as HTMLElement;
 const recordIcon: any = document.getElementById("recordicon");
 const recordIconSlash: any = document.getElementById("recordicon-slash");
 const keybindActionOptions: any = document.getElementById("kb-action-options");
+const newKeybindDisplays: any = document.getElementById("keybind-display");
+let prevKeybind = "";
+let prevAction = "";
 
 let isRecording = false;
 
@@ -88,8 +93,11 @@ let userConfig: any = {
   },
   keyboardLayout: "",
   modkey: "",
-  keybindings: [],
+  keybindings: {},
 };
+
+const saveBtn = document.getElementById("save-btn");
+const importBtn = document.getElementById("import-btn");
 
 // Monitor functions
 addNewMonitor.addEventListener("click", (e) => {
@@ -100,6 +108,7 @@ addNewMonitor.addEventListener("click", (e) => {
 function addNewMonitorInputToDom(
   obj: Record<string, string | Array<string | number>>,
 ) {
+  console.log(obj);
   const container = document.createElement("div");
   container.className = "flex flex-row gap-6 mt-2";
   container.innerHTML = `
@@ -228,7 +237,7 @@ function colorPickerChanger(
   display: HTMLSpanElement,
   key: keyof typeof colorPickerMap,
 ) {
-  color.addEventListener("input", (e: any) => {
+color.addEventListener("input", (e: any) => {
     e.preventDefault();
     display.textContent = e.target.value;
     userConfig.colors[key] = e.target.value;
@@ -271,7 +280,6 @@ document.querySelectorAll('input[name="termAnswer"]').forEach((input) => {
 });
 
 // Kb repeat rate listener
-
 repeatRateInput?.addEventListener("input", (e) => {
   const target = e.target as HTMLInputElement;
   userConfig = updateConfigValue(
@@ -332,6 +340,7 @@ function handleKeyPress(e: any) {
     keyDisplay.textContent = pressedKey;
   }
 
+  localStorage.setItem("currentKeybind", JSON.stringify(pressedKey));
   recordIcon.classList.toggle("hidden");
   recordIconSlash.classList.toggle("hidden");
   isRecording = false;
@@ -343,12 +352,152 @@ addNewBindBtn.addEventListener("click", (e) => {
   keybindPrompt.classList.remove("hidden");
 });
 
+function renderNewKeybinds(action: any, keybind: any) {
+  const container = document.createElement("div");
+  container.className = "flex flex-row gap-10";
+  container.innerHTML = `
+        <h1>Modkey + ${keybind}</h1>
+        <h1>${action}</h1>
+        <button
+            id="delete-keybind-btn"
+        >
+            x
+        </button>
+    `;
+  newKeybindDisplays.append(container);
+  console.log(userConfig);
+  const deleteBtn = document.getElementById("delete-keybind-btn");
+
+  deleteBtn?.addEventListener("click", (e) => {
+    container.remove();
+    delete userConfig.keybindings[keybind];
+    console.log(userConfig);
+  });
+}
+
 addNewKeybindPromptBtn?.addEventListener("click", (e) => {
   e.preventDefault();
+  const optionValue = keybindActionOptions.value;
   keybindPrompt.classList.add("hidden");
+  const currentKeybind: string = JSON.parse(
+    localStorage.getItem("currentKeybind") as any,
+  );
+  console.log(prevKeybind);
+  console.log(currentKeybind);
+  if (!currentKeybind) {
+    alert("You cant use modkey alone");
+    return;
+  }
+  if (prevKeybind == currentKeybind) {
+    alert("You cant use the same keybinds");
+    return;
+  }
+  if (prevAction == optionValue) {
+    alert("You cant assign the same action again");
+    return;
+  }
+  userConfig = updateConfigValue(userConfig, "keybindings", {
+    [keyDisplay.textContent]: optionValue,
+  });
+  prevKeybind = currentKeybind;
+  prevAction = optionValue;
+  renderNewKeybinds(optionValue, keyDisplay.textContent);
 });
 
 cancelNewKeybindBtn?.addEventListener("click", (e) => {
   e.preventDefault();
   keybindPrompt.classList.add("hidden");
 });
+
+saveBtn?.addEventListener("click", (e) => {
+  e.preventDefault();
+  const userId = JSON.parse(localStorage.getItem("userId") as any);
+  const configType = "tilingwm"
+  uploadSubcollection(userId, userConfig, configType);
+})
+
+function restoreSavedTermConfig() {
+  document.querySelectorAll('input[name="termAnswer"]').forEach((input: any) => {
+    const terminalName = input.id.toLowerCase();
+    if (terminalName.includes(userConfig.terminal)) {
+      input.checked = true;
+    }
+  })
+}
+
+function restoreSavedColorsConfig() {
+  const colorPickerMap: Record<string, {inputId: string; textId: string}> = {
+    focused: {inputId: "focused-color", textId: "focused-color-text"},
+    focusedInactive: {inputId: "focused-inactive-color", textId: "focused-inactive-color-text"},
+    inactive: {inputId: "inactive-color", textId: "inactive-color-text"},
+    urgent: {inputId: "urgent-color", textId: "urgent-color-text"},
+  }
+
+  for (const [key, value] of Object.entries(userConfig.colors)) {
+    const elmIds = colorPickerMap[key];
+    if (elmIds) {
+      const inputEl = document.getElementById(elmIds.inputId) as HTMLInputElement;
+      const textEl = document.getElementById(elmIds.textId) as HTMLSpanElement;
+
+      if (inputEl) {
+        inputEl.value = value as any;
+      }
+
+      if (textEl) {
+        textEl.textContent = value as any;
+      }
+    }
+  }
+}
+
+function restoreSavedMonitorsConfig() {
+  if (userConfig.monitors.length > 0) {
+    userConfig.monitors.forEach((monitors: any) => {
+      addNewMonitorInputToDom(monitors);
+    })
+  }
+}
+
+function restoreSavedKeyboardConfig() {
+  // Keyboard layout listener
+  document.querySelectorAll('input[name="keyboardValue"]').forEach((input: any) => {
+    if (input.value == userConfig.keyboardLayout) {
+      input.checked = true
+    }
+  });
+
+  document.querySelectorAll('input[name="modkeyInput"]').forEach((input: any) => {
+    if (input.value == userConfig.modkey) {
+      input.checked = true
+    }
+  });
+  repeatRateInput.value = userConfig.repeatRate;
+}
+
+function restoreSavedKeybindsConfig() {
+  console.log(userConfig.keybindings);
+  if (userConfig.keybindings) {
+    for (const [key, value] of Object.entries(userConfig.keybindings)) {
+      renderNewKeybinds(value, key)
+    }
+  }
+}
+
+function restoreSavedConfiguration() {
+  userConfig = JSON.parse(localStorage.getItem("user_config") as any)
+  restoreSavedMonitorsConfig();
+  restoreSavedTermConfig();
+  restoreSavedColorsConfig();
+  restoreSavedKeyboardConfig();
+  restoreSavedKeybindsConfig();
+  console.log("Restored");
+}
+
+importBtn?.addEventListener("click", async (e) => {
+  e.preventDefault();
+  const userId = JSON.parse(localStorage.getItem("userId") as any);
+  const configType = "tilingwm"
+  await getUploadedSubCollection(userId, configType);
+  restoreSavedConfiguration();
+  console.log(userConfig);
+})

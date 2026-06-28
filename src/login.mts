@@ -51,6 +51,7 @@ function getUserInfoFromDb(userCreds: any) {
   docSnap.then((doc) => {
     if (doc.exists()) {
       localStorage.setItem(userSession.sessionKey, JSON.stringify(doc.data()));
+      localStorage.setItem("userId", JSON.stringify(userCreds.uid));
       sendUserToHomePage();
     } else {
       console.log("No such document!");

@@ -75,6 +75,5 @@
 /* Xóa viền đen bên trong swatch (Firefox) */
 .picker-clean::-moz-color-swatch {
     border: none !important;
-    colorPickerMap[key] = e.target.value;
     padding: 0 !important;
 }

@@ -489,10 +489,7 @@
                             </h4>
                         </div>
                         <section class="main-section-tilingwm">
-                            <!-- container that holds the keybinds -->
-                            <div></div>
-
-                            <div class="flex justify-center w-full">
+                            <div class="flex justify-center w-full mb-5">
                                 <button
                                     class="border border-dashed p-2 hover:text-monolith-accent w-full"
                                     id="add-new-bind-btn"
@@ -500,6 +497,11 @@
                                     + Add a new binding
                                 </button>
                             </div>
+                            <!-- container that holds the keybinds -->
+                            <div
+                                class="flex flex-col"
+                                id="keybind-display"
+                            ></div>
                         </section>
                         <div class="flex justify-center">
                             <div
@@ -658,7 +660,7 @@
         <div
             class="flex flex-row gap-8 justify-end pr-20 bg-surface-topbar dark:bg-monolith-surface p-2 sticky left-0 right-0 bottom-0 font-headline border-none"
         >
-            <button class="button-tilingwm">
+            <button class="button-tilingwm" id="save-btn">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -692,7 +694,7 @@
                 </svg>
                 <h5>Download</h5>
             </button>
-            <button class="button-tilingwm">
+            <button class="button-tilingwm" id="import-btn">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"

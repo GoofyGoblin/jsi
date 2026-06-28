@@ -7,7 +7,7 @@
         <link href="src/style.css" rel="stylesheet" />
         <link href="src/font.css" rel="stylesheet" />
         <script src="src/theme.mts" type="module" defer></script>
-        <script src="src/text_editor.mts" defer></script>
+        <script src="src/text_editor.mts" type="module" defer></script>
         <script src="src/account.mts" type="module" defer></script>
     </head>
     <body class="min-h-screen font-body bg-surface-bg prevent-select">
@@ -398,7 +398,7 @@
         <div
             class="flex flex-row gap-8 justify-end pr-20 bg-surface-topbar dark:bg-monolith-surface sticky left-0 right-0 bottom-0 font-headline p-2"
         >
-            <button class="button-tilingwm">
+            <button class="button-tilingwm" id="save-btn">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -432,7 +432,7 @@
                 </svg>
                 <h5>Download</h5>
             </button>
-            <button class="button-tilingwm">
+            <button class="button-tilingwm" id="import-btn">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"

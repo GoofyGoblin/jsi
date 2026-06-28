@@ -1,3 +1,5 @@
+import { uploadSubcollection, getUploadedSubCollection } from "./saveConfigSettings.mts";
+
 const recordBtn = document.getElementById("record-btn") as HTMLElement;
 const keyDisplay = document.getElementById("key-display") as HTMLElement;
 const recordIcon: any = document.getElementById("recordicon");
@@ -94,6 +96,10 @@ const generalSettings: Record<string, boolean | string> = {
   lineBreak: false,
   statusLine: false,
 };
+
+const saveBtn = document.getElementById("save-btn");
+const importBtn = document.getElementById("import-btn")
+
 let isRecording = false;
 
 function formatVimKey(key: any) {
@@ -222,3 +228,24 @@ tokyonightRadio.addEventListener("change", (e: any) =>
 onedarkRadio.addEventListener("change", (e: any) =>
   checkBoxCheck(e, plugins, "colorscheme"),
 );
+
+saveBtn?.addEventListener("click", (e) => {
+  e.preventDefault();
+  const userId = JSON.parse(localStorage.getItem("userId") as any);
+  uploadSubcollection(userId, {
+    editorName: "nvim",
+    generalSettings,
+    languages,
+    plugins,
+  }, "editor" )
+
+  console.log("uploaded, maybe ig")
+})
+
+
+importBtn?.addEventListener("click", async (e) => {
+  e.preventDefault();
+  const userId = JSON.parse(localStorage.getItem("userId") as any);
+  const configType = "editor"
+  await getUploadedSubCollection(userId, configType);
+})
