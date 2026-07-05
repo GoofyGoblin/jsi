@@ -1,4 +1,6 @@
 import { uploadSubcollection, getUploadedSubCollection } from "./saveConfigSettings.mts";
+import { userSession } from "./userSession.mts";
+import { downloadFile, swayGenerator } from "./generator.mts";
 
 // Monitor variables
 const addNewMonitor = document.getElementById(
@@ -98,6 +100,8 @@ let userConfig: any = {
 
 const saveBtn = document.getElementById("save-btn");
 const importBtn = document.getElementById("import-btn");
+const downloadBtn = document.getElementById("download-btn");
+const fileInput = document.getElementById("import-input");
 
 // Monitor functions
 addNewMonitor.addEventListener("click", (e) => {
@@ -483,8 +487,11 @@ function restoreSavedKeybindsConfig() {
   }
 }
 
-function restoreSavedConfiguration() {
+function restoreSavedConfiguration(importedJson?: string) {
   userConfig = JSON.parse(localStorage.getItem("user_config") as any)
+  if (importedJson) {
+    userConfig = JSON.parse(importedJson)
+  }
   restoreSavedMonitorsConfig();
   restoreSavedTermConfig();
   restoreSavedColorsConfig();
@@ -493,11 +500,86 @@ function restoreSavedConfiguration() {
   console.log("Restored");
 }
 
-importBtn?.addEventListener("click", async (e) => {
-  e.preventDefault();
+async function restoreUserConfig() {
+  const userInfo = JSON.parse(localStorage.getItem(userSession.sessionKey) as any)
+  if (!userInfo) {
+    return;
+  }
   const userId = JSON.parse(localStorage.getItem("userId") as any);
   const configType = "tilingwm"
   await getUploadedSubCollection(userId, configType);
   restoreSavedConfiguration();
-  console.log(userConfig);
+}
+restoreUserConfig();
+
+importBtn?.addEventListener("click", (e) => {
+  e.preventDefault();
+  fileInput?.click();
 })
+
+let pageSnapshot: any = [];
+
+window.addEventListener("DOMContentLoaded", () => {
+  const allElements = document.querySelector("body *") as any;
+  allElements.forEach((el: any, index: any) => {
+    if (!el.id) {
+      el.dataset.restoreId = `el-${index}`;
+    }
+
+    pageSnapshot.push({
+      id: el.id,
+      restoreId: el.dataset.restoreId,
+      text: el.childNodes.length > 0 && el.childNodes.nodeType === Node.TEXT_NODE ? el.childNodes[0].textContent : null,
+      value: (el.value !== undefined) ? el.value : null,
+      checked: (el.checked !== undefined) ? el.checked : null,
+    })
+  })
+})
+
+function restorePage() {
+  pageSnapshot.forEach((snap: any) => {
+    let el: any = snap.id ? document.getElementById(snap.id) : document.querySelector(`[data-restore-id = "${snap.restoreId}"]`);
+
+    if (!el) return;
+
+    if (snap.text != null && el.childNodes.length > 0 && el.childNodes[0].nodeType === Node.TEXT_NODE) {
+      el.childNodes[0].textContent = snap.text;
+    }
+
+    if (snap.value !== null) {
+      el.value = snap.value;
+    }
+
+    if (snap.checked !== null) {
+      el.checked = snap.checked;
+    }
+
+  })
+}
+
+fileInput?.addEventListener('change', (e: any) => {
+  const files = e.target.files;
+
+  if (files.length > 0) {
+    const file = files[0];
+    const reader = new FileReader();
+
+    reader.readAsText(file);
+    reader.onload = (e: any) => {
+      restorePage();
+      restoreSavedConfiguration(e.target.result)
+    }
+  } else {
+    return
+  }
+})
+
+
+
+downloadBtn?.addEventListener("click", (e) => {
+  e.preventDefault();
+  swayGenerator(userConfig)
+  const cleansedJson = JSON.stringify(userConfig).replace(/\u00a0/g, ' ');
+  downloadFile(cleansedJson, "generatedJson.json")
+})
+

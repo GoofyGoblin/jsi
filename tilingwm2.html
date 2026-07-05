@@ -519,39 +519,38 @@
                                             class="border p-1 dark:bg-gray-800 rounded-sm w-full pr-10"
                                         >
                                             <option>kill</option>
-                                            <option>fullscreen</option>
-                                            <option>floating</option>
-                                            <option>sticky</option>
+                                            <option>fullscreen toggle</option>
+                                            <option>floating toggle</option>
                                             <option>focus left</option>
                                             <option>focus right</option>
                                             <option>focus up</option>
                                             <option>focus down</option>
                                             <option>
-                                                move container to workspace [1]
+                                                move container to workspace 1
                                             </option>
                                             <option>
-                                                move container to workspace [2]
+                                                move container to workspace 2
                                             </option>
                                             <option>
-                                                move container to workspace [3]
+                                                move container to workspace 3
                                             </option>
                                             <option>
-                                                move container to workspace [4]
+                                                move container to workspace 4
                                             </option>
                                             <option>
-                                                move container to workspace [5]
+                                                move container to workspace 5
                                             </option>
                                             <option>
-                                                move container to workspace [6]
+                                                move container to workspace 6
                                             </option>
                                             <option>
-                                                move container to workspace [7]
+                                                move container to workspace 7
                                             </option>
                                             <option>
-                                                move container to workspace [8]
+                                                move container to workspace 8
                                             </option>
                                             <option>
-                                                move container to workspace [9]
+                                                move container to workspace 9
                                             </option>
                                             <option>
                                                 move container to output left
@@ -568,24 +567,10 @@
                                             <option>
                                                 move container to scratchpad
                                             </option>
-                                            <option>layout default</option>
-                                            <option>layout tabbed</option>
-                                            <option>layout stacking</option>
-                                            <option>layout splitv</option>
-                                            <option>layout splith</option>
-                                            <option>workspace [1]</option>
-                                            <option>workspace [2]</option>
-                                            <option>workspace [3]</option>
-                                            <option>workspace [4]</option>
-                                            <option>workspace [5]</option>
-                                            <option>workspace [6]</option>
-                                            <option>workspace [7]</option>
-                                            <option>workspace [8]</option>
-                                            <option>workspace [9]</option>
-                                            <option>workspace [10]</option>
-                                            <option>scratchpad show</option>
-                                            <option>reload</option>
-                                            <option>exit</option>
+                                            <option>move down</option>
+                                            <option>move up</option>
+                                            <option>move left</option>
+                                            <option>move right</option>
                                         </select>
                                     </label>
                                     <label class="flex flex-col">
@@ -677,7 +662,7 @@
                 </svg>
                 <h5>Save changes</h5>
             </button>
-            <button class="button-tilingwm">
+            <button class="button-tilingwm" id="download-btn">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -711,6 +696,8 @@
                 </svg>
                 <h5>Import</h5>
             </button>
+            <input type="file" id="import-input" class="hidden">
+            <button id="restore-btn" class="text-blue-200">restore</button>
         </div>
         <!-- bottom canvas end -->
     </body>

@@ -1,4 +1,6 @@
 import { uploadSubcollection, getUploadedSubCollection } from "./saveConfigSettings.mts";
+import { userSession } from "./userSession.mts";
+import { downloadFile, nvimGenerator } from "./generator.mts";
 
 const recordBtn = document.getElementById("record-btn") as HTMLElement;
 const keyDisplay = document.getElementById("key-display") as HTMLElement;
@@ -97,8 +99,10 @@ let generalSettings: Record<string, boolean | string> = {
   statusLine: false,
 };
 
-const saveBtn = document.getElementById("save-btn");
+const saveBtn = document.getElementById("save-btn")
 const importBtn = document.getElementById("import-btn")
+const fileInput = document.getElementById("import-input")
+const downloadBtn = document.getElementById("download-btn")
 
 let isRecording = false;
 
@@ -161,6 +165,7 @@ const pluginCheckBoxes = new Map([
   [telescopeCheckBox, "telescope"],
   [treeSitterCheckBox, "treesitter"],
   [nvimTreeCheckBox, "nvimtree"],
+  [lualineCheckBox, "lualine"],
   [undotreeCheckBox, "undotree"],
   [gruvboxRadio, "colorscheme"],
   [catpuccinRadio, "colorscheme"],
@@ -209,6 +214,9 @@ saveBtn?.addEventListener("click", (e) => {
     plugins,
   }, "editor" )
 
+  console.table({"general settings": generalSettings})
+  console.table({"languages": languages})
+  console.table({"plugins": plugins})
   console.log("uploaded, maybe ig")
 })
 
@@ -231,7 +239,6 @@ function restoreSavedConfiguration(checkBoxes: HTMLInputElement, checkBoxesType:
       }
     }
     languages = userConfig
-    console.log(languages, userConfig);
     return;
   }
 
@@ -241,7 +248,10 @@ function restoreSavedConfiguration(checkBoxes: HTMLInputElement, checkBoxesType:
         checkBoxes.checked = value as any;
       }
     }
+    plugins = userConfig
+    return;
   }
+  console.log(generalSettings, languages, plugins);
 }
 
 function callRestoreSavedConfiguration(map: any, userConfig: any, type: any) {
@@ -250,14 +260,65 @@ function callRestoreSavedConfiguration(map: any, userConfig: any, type: any) {
   }
 }
 
-importBtn?.addEventListener("click", async (e) => {
-  e.preventDefault();
+async function restoreUserConfiguration(importedJson?: any) {
+  const userInfo = JSON.parse(localStorage.getItem(userSession.sessionKey) as any)
+  if (!userInfo) {
+    return
+  }
   const userId = JSON.parse(localStorage.getItem("userId") as string);
   const configType = "editor"
   await getUploadedSubCollection(userId, configType);
-  console.log(JSON.parse(localStorage.getItem("user_config") as any))
-  const userConfig = JSON.parse(localStorage.getItem("user_config") as any)
+  let userConfig = JSON.parse(localStorage.getItem("user_config") as any)
+  if (importedJson) {
+    userConfig = JSON.parse(importedJson);
+  }
   callRestoreSavedConfiguration(generalSettingsCheckBoxes, userConfig.generalSettings, "generalSettings")
   callRestoreSavedConfiguration(languagesCheckBoxes, userConfig.languages, "languages")
+  callRestoreSavedConfiguration(pluginCheckBoxes,  userConfig.plugins, "plugins")
+}
+restoreUserConfiguration();
+
+
+importBtn?.addEventListener("click", (e) => {
+  e.preventDefault();
+  fileInput?.click();
 })
 
+fileInput?.addEventListener('change', (e: any) => {
+  const files = e.target.files;
+
+  if (files.length > 0) {
+    const file = files[0];
+    const reader = new FileReader();
+
+    reader.readAsText(file);
+    reader.onload = (e: any) => {
+      restoreUserConfiguration(e.target.result)
+    }
+  } else {
+    return
+  }
+})
+
+downloadBtn?.addEventListener("click", (e: any) => {
+  e.preventDefault();
+  const userConfig = localStorage.getItem("user_config") as any;
+  nvimGenerator(JSON.parse(userConfig))
+  const cleansedJson = userConfig.replace(/\u00a0/g, ' ');
+  downloadFile(cleansedJson, "generatedJson.json")
+  console.log("Generated?");
+})
+
+
+
+// assign the local storage variables if page gets reloaded
+if (window.performance) {
+  const [navigationEntry] = performance.getEntriesByType('navigation') as any;
+
+  if (navigationEntry && navigationEntry.type === 'reload') {
+    const userConfig = JSON.parse(localStorage.getItem("user_config") as any)
+    plugins = userConfig.plugins;
+    generalSettings = userConfig.generalSettings;
+    languages = userConfig.languages;
+  }
+}
