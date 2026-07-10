@@ -6,6 +6,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signInWithRedirect,
+  sendEmailVerification,
 } from "firebase/auth";
 import type { User } from "firebase/auth/web-extension";
 
@@ -50,7 +51,7 @@ function passSubmittedElements(
   password: HTMLInputElement,
   confirmPassword: HTMLInputElement,
 ) {
-  submitBtn.addEventListener("click", (e) => {
+  submitBtn?.addEventListener("click", (e) => {
     e.preventDefault();
     const userObj: regsiterUser = {
       username: usernameInput.value,
@@ -86,10 +87,24 @@ function checkSubmittedElements(userObj: regsiterUser) {
   createNewUserInAuth(userObj);
 }
 
+export async function emailVerification(userCreds: any, alertString?: string) {
+  try {
+    const user = userCreds.user;
+    await sendEmailVerification(user);
+    alert(alertString);
+  } catch (e: any) {
+    console.log("error signing up", e.message);
+  }
+}
+
 function createNewUserInAuth(userObj: regsiterUser) {
   createUserWithEmailAndPassword(auth, userObj.email, userObj.password)
     .then((userCredentials) => {
       alert("Registered succesfully");
+      emailVerification(
+        userCredentials,
+        "Account created, please check your email inbox for confirmation",
+      );
       sendSubmittedElements(userObj, userCredentials);
     })
     .catch((e) => {
@@ -119,7 +134,7 @@ async function sendSubmittedElements(userObj: regsiterUser, userCreds: any) {
 
 // Google sign in
 function googleBtnClicked() {
-  googleBtn.addEventListener("click", async (e) => {
+  googleBtn?.addEventListener("click", async (e) => {
     e.preventDefault();
     const isSignedIn = await signInWithGoogle("user");
 

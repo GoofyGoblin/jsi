@@ -48,10 +48,16 @@ function checkSubmittedElements(userObj: loginUser) {
 function getUserInfoFromDb(userCreds: any) {
   const docRef = doc(db, "users", userCreds.uid);
   const docSnap = getDoc(docRef);
+  const user = userCreds.user;
   docSnap.then((doc) => {
     if (doc.exists()) {
       localStorage.setItem(userSession.sessionKey, JSON.stringify(doc.data()));
       localStorage.setItem("userId", JSON.stringify(userCreds.uid));
+      localStorage.setItem(
+        "isEmailVerified",
+        JSON.stringify(userCreds.emailVerified),
+      );
+      localStorage.setItem("userCredentials", JSON.stringify(userCreds));
       sendUserToHomePage();
     } else {
       console.log("No such document!");

@@ -152,7 +152,13 @@ function checkIfLoggedIn(userOption: user_option) {
 }
 
 function sendUserToConfigPage(userOption: user_option) {
-  debugger;
+  const isEmailVerified = JSON.parse(
+    localStorage.getItem("isEmailVerified") as any,
+  );
+  if (!isEmailVerified) {
+    alert("Please verify your email first");
+    return;
+  }
   if (userOption.tilingWM == "undefined") {
     window.location.href = "texteditor2.html";
   } else {
