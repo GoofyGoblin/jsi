@@ -24,8 +24,16 @@
     @apply relative bg-surface-tint p-8 rounded-lg hover:bg-[#bdcdfc] dark:bg-surface-container dark:hover:bg-surface-container-high cursor-pointer overflow-hidden;
 }
 
+.tilingwm-selector-bg-2 {
+    @apply relative bg-on-surface-variant p-8 rounded-lg dark:bg-surface-container-low cursor-pointer overflow-hidden;
+}
+
 .editor-selector-bg {
     @apply relative bg-surface-tint p-8 rounded-lg hover:bg-[#bdcdfc] dark:bg-surface-container dark:hover:bg-surface-container-high cursor-pointer overflow-hidden w-[34.3rem] md:w-2xl;
+}
+
+.editor-selector-bg-2 {
+    @apply relative bg-on-surface-variant p-8 rounded-lg dark:bg-surface-container-low cursor-pointer overflow-hidden w-[34.3rem] md:w-2xl;
 }
 
 .selector-text {

@@ -35,10 +35,10 @@ function boxButtonClicked(boxButton: HTMLButtonElement, tilingChoice: string) {
 }
 
 function onTilingWMBoxClick() {
-  boxButtonClicked(hyprlandBox, "hyprland");
+  // boxButtonClicked(hyprlandBox, "hyprland");
   boxButtonClicked(swayBox, "i3Box");
-  boxButtonClicked(i3Box, "i3");
-  boxButtonClicked(bspwmBox, "bspwm");
+  // boxButtonClicked(i3Box, "i3");
+  // boxButtonClicked(bspwmBox, "bspwm");
 }
 onTilingWMBoxClick();
 
@@ -69,21 +69,25 @@ onEditorBoxClick();
 function addTilingBoxBorder(box: HTMLElement) {
   if (lastTilingWMBox && lastTilingWMBox != box) {
     lastTilingWMBox.classList.remove("border-primary/20");
+    lastTilingWMBox.classList.remove("border-blue-500");
     lastTilingWMBox.classList.remove("border");
   }
 
   box.classList.add("border");
-  box.classList.add("border-primary/20");
+  box.classList.add("border-blue-500");
+  box.classList.add("dark:border-primary/20");
 
   if (lastTilingWMBox == box) {
     if (boxClicked == false) {
       box.classList.add("border");
-      box.classList.add("border-primary/20");
+      box.classList.add("border-blue-500");
+      box.classList.add("dark:border-primary/20");
       boxClicked = true;
     } else {
       currentTilingChoice = undefined;
       box.classList.remove("border");
-      box.classList.remove("border-primary/20");
+      box.classList.add("border-blue-500");
+      box.classList.remove("dark:border-primary/20");
       boxClicked = false;
     }
   }
@@ -93,22 +97,26 @@ function addTilingBoxBorder(box: HTMLElement) {
 
 function addEditorBoxBorder(box: HTMLElement) {
   if (lastEditorBox && lastEditorBox != box) {
-    lastEditorBox.classList.remove("border-primary/20");
+    lastEditorBox.classList.remove("dark:border-primary/20");
+    lastEditorBox.classList.remove("border-blue-500");
     lastEditorBox.classList.remove("border");
   }
 
   box.classList.add("border");
-  box.classList.add("border-primary/20");
+  box.classList.add("border-blue-500");
+  box.classList.add("dark:border-primary/20");
 
   if (lastEditorBox == box) {
     if (editorBoxClicked == false) {
       box.classList.add("border");
-      box.classList.add("border-primary/20");
+      box.classList.add("border-blue-500");
+      box.classList.add("dark:border-primary/20");
       editorBoxClicked = true;
     } else {
       currentEditorChoice = undefined;
       box.classList.remove("border");
-      box.classList.remove("border-primary/20");
+      box.classList.remove("border-blue-500");
+      box.classList.remove("dark:border-primary/20");
       editorBoxClicked = false;
     }
   }
@@ -146,8 +154,8 @@ function checkIfLoggedIn(userOption: user_option) {
 function sendUserToConfigPage(userOption: user_option) {
   debugger;
   if (userOption.tilingWM == "undefined") {
-    window.location.href = "texteditor_config_editor.html";
+    window.location.href = "texteditor2.html";
   } else {
-    window.location.href = "tilingWM_config_editor.html";
+    window.location.href = "tilingwm2.html";
   }
 }

@@ -1,4 +1,7 @@
-import { uploadSubcollection, getUploadedSubCollection } from "./saveConfigSettings.mts";
+import {
+  uploadSubcollection,
+  getUploadedSubCollection,
+} from "./saveConfigSettings.mts";
 import { userSession } from "./userSession.mts";
 import { downloadFile, swayGenerator } from "./generator.mts";
 
@@ -103,6 +106,9 @@ const importBtn = document.getElementById("import-btn");
 const downloadBtn = document.getElementById("download-btn");
 const fileInput = document.getElementById("import-input");
 
+let displayContainerCount = 0;
+let keybindContainerCount = 0;
+
 // Monitor functions
 addNewMonitor.addEventListener("click", (e) => {
   e.preventDefault();
@@ -115,6 +121,7 @@ function addNewMonitorInputToDom(
   console.log(obj);
   const container = document.createElement("div");
   container.className = "flex flex-row gap-6 mt-2";
+  container.id = `display-${displayContainerCount}`;
   container.innerHTML = `
     <div>
         <label class="block text-sm font-medium mb-1"
@@ -185,7 +192,7 @@ function addNewMonitorInputToDom(
         <label class="block text-sm font-medium mb-1">⠀⠀⠀</label>
         <button
             class="bg-red-500 text-white rounded-sm pl-2 pr-2 mt-0.5"
-            id="delete-monitorcfg-btn"
+            id="delete-monitorcfg-btn-${displayContainerCount}"
         >
             x
         </button>
@@ -193,7 +200,10 @@ function addNewMonitorInputToDom(
     `;
 
   newMonitorDisplay.append(container);
-  const deleteBtn = document.getElementById("delete-monitorcfg-btn");
+  const deleteBtn = document.getElementById(
+    `delete-monitorcfg-btn-${displayContainerCount}`,
+  );
+  displayContainerCount += 1;
 
   deleteBtn?.addEventListener("click", (e) => {
     container.remove();
@@ -241,7 +251,7 @@ function colorPickerChanger(
   display: HTMLSpanElement,
   key: keyof typeof colorPickerMap,
 ) {
-color.addEventListener("input", (e: any) => {
+  color.addEventListener("input", (e: any) => {
     e.preventDefault();
     display.textContent = e.target.value;
     userConfig.colors[key] = e.target.value;
@@ -359,18 +369,23 @@ addNewBindBtn.addEventListener("click", (e) => {
 function renderNewKeybinds(action: any, keybind: any) {
   const container = document.createElement("div");
   container.className = "flex flex-row gap-10";
+  container.id = `keybind-${keybindContainerCount}`;
   container.innerHTML = `
         <h1>Modkey + ${keybind}</h1>
         <h1>${action}</h1>
         <button
-            id="delete-keybind-btn"
+            id="delete-keybind-btn-${keybindContainerCount}"
         >
             x
         </button>
     `;
   newKeybindDisplays.append(container);
   console.log(userConfig);
-  const deleteBtn = document.getElementById("delete-keybind-btn");
+  const deleteBtn = document.getElementById(
+    `delete-keybind-btn-${keybindContainerCount}`,
+  );
+
+  keybindContainerCount += 1;
 
   deleteBtn?.addEventListener("click", (e) => {
     container.remove();
@@ -416,31 +431,38 @@ cancelNewKeybindBtn?.addEventListener("click", (e) => {
 saveBtn?.addEventListener("click", (e) => {
   e.preventDefault();
   const userId = JSON.parse(localStorage.getItem("userId") as any);
-  const configType = "tilingwm"
+  const configType = "tilingwm";
   uploadSubcollection(userId, userConfig, configType);
-})
+});
 
 function restoreSavedTermConfig() {
-  document.querySelectorAll('input[name="termAnswer"]').forEach((input: any) => {
-    const terminalName = input.id.toLowerCase();
-    if (terminalName.includes(userConfig.terminal)) {
-      input.checked = true;
-    }
-  })
+  document
+    .querySelectorAll('input[name="termAnswer"]')
+    .forEach((input: any) => {
+      const terminalName = input.id.toLowerCase();
+      if (terminalName.includes(userConfig.terminal)) {
+        input.checked = true;
+      }
+    });
 }
 
 function restoreSavedColorsConfig() {
-  const colorPickerMap: Record<string, {inputId: string; textId: string}> = {
-    focused: {inputId: "focused-color", textId: "focused-color-text"},
-    focusedInactive: {inputId: "focused-inactive-color", textId: "focused-inactive-color-text"},
-    inactive: {inputId: "inactive-color", textId: "inactive-color-text"},
-    urgent: {inputId: "urgent-color", textId: "urgent-color-text"},
-  }
+  const colorPickerMap: Record<string, { inputId: string; textId: string }> = {
+    focused: { inputId: "focused-color", textId: "focused-color-text" },
+    focusedInactive: {
+      inputId: "focused-inactive-color",
+      textId: "focused-inactive-color-text",
+    },
+    inactive: { inputId: "inactive-color", textId: "inactive-color-text" },
+    urgent: { inputId: "urgent-color", textId: "urgent-color-text" },
+  };
 
   for (const [key, value] of Object.entries(userConfig.colors)) {
     const elmIds = colorPickerMap[key];
     if (elmIds) {
-      const inputEl = document.getElementById(elmIds.inputId) as HTMLInputElement;
+      const inputEl = document.getElementById(
+        elmIds.inputId,
+      ) as HTMLInputElement;
       const textEl = document.getElementById(elmIds.textId) as HTMLSpanElement;
 
       if (inputEl) {
@@ -458,23 +480,27 @@ function restoreSavedMonitorsConfig() {
   if (userConfig.monitors.length > 0) {
     userConfig.monitors.forEach((monitors: any) => {
       addNewMonitorInputToDom(monitors);
-    })
+    });
   }
 }
 
 function restoreSavedKeyboardConfig() {
   // Keyboard layout listener
-  document.querySelectorAll('input[name="keyboardValue"]').forEach((input: any) => {
-    if (input.value == userConfig.keyboardLayout) {
-      input.checked = true
-    }
-  });
+  document
+    .querySelectorAll('input[name="keyboardValue"]')
+    .forEach((input: any) => {
+      if (input.value == userConfig.keyboardLayout) {
+        input.checked = true;
+      }
+    });
 
-  document.querySelectorAll('input[name="modkeyInput"]').forEach((input: any) => {
-    if (input.value == userConfig.modkey) {
-      input.checked = true
-    }
-  });
+  document
+    .querySelectorAll('input[name="modkeyInput"]')
+    .forEach((input: any) => {
+      if (input.value == userConfig.modkey) {
+        input.checked = true;
+      }
+    });
   repeatRateInput.value = userConfig.repeatRate;
 }
 
@@ -482,15 +508,15 @@ function restoreSavedKeybindsConfig() {
   console.log(userConfig.keybindings);
   if (userConfig.keybindings) {
     for (const [key, value] of Object.entries(userConfig.keybindings)) {
-      renderNewKeybinds(value, key)
+      renderNewKeybinds(value, key);
     }
   }
 }
 
 function restoreSavedConfiguration(importedJson?: string) {
-  userConfig = JSON.parse(localStorage.getItem("user_config") as any)
+  userConfig = JSON.parse(localStorage.getItem("user_config") as any);
   if (importedJson) {
-    userConfig = JSON.parse(importedJson)
+    userConfig = JSON.parse(importedJson);
   }
   restoreSavedMonitorsConfig();
   restoreSavedTermConfig();
@@ -501,12 +527,14 @@ function restoreSavedConfiguration(importedJson?: string) {
 }
 
 async function restoreUserConfig() {
-  const userInfo = JSON.parse(localStorage.getItem(userSession.sessionKey) as any)
+  const userInfo = JSON.parse(
+    localStorage.getItem(userSession.sessionKey) as any,
+  );
   if (!userInfo) {
     return;
   }
   const userId = JSON.parse(localStorage.getItem("userId") as any);
-  const configType = "tilingwm"
+  const configType = "tilingwm";
   await getUploadedSubCollection(userId, configType);
   restoreSavedConfiguration();
 }
@@ -515,49 +543,25 @@ restoreUserConfig();
 importBtn?.addEventListener("click", (e) => {
   e.preventDefault();
   fileInput?.click();
-})
+});
 
-let pageSnapshot: any = [];
-
-window.addEventListener("DOMContentLoaded", () => {
-  const allElements = document.querySelector("body *") as any;
-  allElements.forEach((el: any, index: any) => {
-    if (!el.id) {
-      el.dataset.restoreId = `el-${index}`;
+function wipeAllAddedContainers(typeOfContainer: string) {
+  if (typeOfContainer === "keybinds") {
+    for (let i = 0; i < keybindContainerCount; ++i) {
+      document.getElementById(`keybind-${i}`)?.remove();
+      console.log("removed keybind count ", i);
     }
+  }
 
-    pageSnapshot.push({
-      id: el.id,
-      restoreId: el.dataset.restoreId,
-      text: el.childNodes.length > 0 && el.childNodes.nodeType === Node.TEXT_NODE ? el.childNodes[0].textContent : null,
-      value: (el.value !== undefined) ? el.value : null,
-      checked: (el.checked !== undefined) ? el.checked : null,
-    })
-  })
-})
-
-function restorePage() {
-  pageSnapshot.forEach((snap: any) => {
-    let el: any = snap.id ? document.getElementById(snap.id) : document.querySelector(`[data-restore-id = "${snap.restoreId}"]`);
-
-    if (!el) return;
-
-    if (snap.text != null && el.childNodes.length > 0 && el.childNodes[0].nodeType === Node.TEXT_NODE) {
-      el.childNodes[0].textContent = snap.text;
+  if (typeOfContainer === "displays") {
+    for (let i = 0; i < displayContainerCount; ++i) {
+      document.getElementById(`display-${i}`)?.remove();
+      console.log("removed display count ", i);
     }
-
-    if (snap.value !== null) {
-      el.value = snap.value;
-    }
-
-    if (snap.checked !== null) {
-      el.checked = snap.checked;
-    }
-
-  })
+  }
 }
 
-fileInput?.addEventListener('change', (e: any) => {
+fileInput?.addEventListener("change", (e: any) => {
   const files = e.target.files;
 
   if (files.length > 0) {
@@ -566,20 +570,18 @@ fileInput?.addEventListener('change', (e: any) => {
 
     reader.readAsText(file);
     reader.onload = (e: any) => {
-      restorePage();
-      restoreSavedConfiguration(e.target.result)
-    }
+      wipeAllAddedContainers("keybinds");
+      wipeAllAddedContainers("displays");
+      restoreSavedConfiguration(e.target.result);
+    };
   } else {
-    return
+    return;
   }
-})
-
-
+});
 
 downloadBtn?.addEventListener("click", (e) => {
   e.preventDefault();
-  swayGenerator(userConfig)
-  const cleansedJson = JSON.stringify(userConfig).replace(/\u00a0/g, ' ');
-  downloadFile(cleansedJson, "generatedJson.json")
-})
-
+  swayGenerator(userConfig);
+  const cleansedJson = JSON.stringify(userConfig).replace(/\u00a0/g, " ");
+  downloadFile(cleansedJson, "generatedJson.json");
+});
