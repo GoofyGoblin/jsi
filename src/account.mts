@@ -1,5 +1,16 @@
 import { userSession } from "./userSession.mts";
 import { emailVerification } from "./register.mts";
+import {
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updateEmail,
+  updatePassword,
+  verifyBeforeUpdateEmail,
+} from "firebase/auth";
+import { auth, db } from "./firebase.config.ts";
+import { signOut } from "firebase/auth/cordova";
+import { collection, doc, setDoc } from "firebase/firestore";
+import { reload } from "firebase/auth";
 
 const userInfo = userSession.getSession();
 const sourceBtn = document.getElementById(
@@ -20,11 +31,16 @@ accountBtn.addEventListener("click", (e) => {
   accountMenu.classList.toggle("hidden");
 });
 
-signOutBtn.addEventListener("click", (e) => {
+signOutBtn.addEventListener("click", async (e) => {
   e.preventDefault();
-  localStorage.removeItem(userSession.sessionKey);
-  localStorage.removeItem(userSession.userInfoKey);
-  window.location.href = "login.html";
+  await signOut(auth)
+    .then(() => {
+      localStorage.clear();
+      window.location.href = "login.html";
+    })
+    .catch((e) => {
+      console.log(e.message);
+    });
 });
 
 function getUserSession() {
@@ -48,7 +64,7 @@ function addAccountDetailsPopup() {
   container.id = "account-settings-container";
   container.innerHTML = `
     <div
-        class="bg-white dark:bg-monolith-surface rounded-md flex flex-col gap-3 dark:text-white p-3"
+        class="bg-surface-bg dark:bg-monolith-surface rounded-md flex flex-col gap-3 dark:text-white p-3"
     >
       <div class="flex justify-between">
         <label class="font-headline font-bold text-2xl dark:text-white"
@@ -100,41 +116,68 @@ function addAccountDetailsPopup() {
                     save
                 </button>
             </div>
-            <div class="flex items-center">
+            <div class="contents hidden" id="email-replace-password-container">
+              <div class="flex items-center">
                 <label
                     class="font-headline text-[14px] font-bold dark:text-white"
-                    >Username:</label
+                    ></label
                 >
-            </div>
-            <div class="flex items-center">
-              <div
-                  class="relative bg-white dark:bg-surface-container-highest rounded-sm flex flex-row items-center w-[20rem] mr-8"
-              >
-                  <input
-                      id="username-replace-input"
-                      placeholder="${userInfo.username}"
-                      class="w-92 border-none rounded-sm dark:bg-surface-container-highest dark:text-white focus:ring-0"
-                      disabled
-                  />
               </div>
-              <button
-                  class="text-[12px] text-blue-400 uppercase"
-                  id="username-edit-btn"
-              >
-                  edit
-              </button>
-              <button
-                  class="text-[12px] text-blue-400 uppercase mr-4 hidden"
-                  id="username-cancel-btn"
-              >
-                  cancel
-              </button>
-              <button
-                  class="text-[12px] text-red-300 uppercase hidden"
-                  id="username-save-btn"
-              >
-                  save
-              </button>
+              <div class="flex items-center">
+                <div
+                    class="relative bg-gray-200 dark:bg-surface-container-highest rounded-sm flex flex-row items-center w-[20rem]"
+                >
+                    <input
+                        type="password"
+                        name="password"
+                        class="w-92 border-none rounded-sm dark:bg-surface-container-highest dark:text-white focus:ring-0"
+                        id="email-replace-password-input"
+                        placeholder="••••••"
+                        oninput="
+                            this.value = this.value.replace(/\s/g, '')
+                        "
+                    />
+
+                    <button id="email-replace-password-peek-btn" class="mr-2">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="size-6 dark:text-on-background hidden"
+                            id="email-replace-eye-icon-open"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                            />
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                            />
+                        </svg>
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="size-6 dark:text-on-background"
+                            id="email-replace-eye-icon-close"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"
+                            />
+                        </svg>
+                    </button>
+                </div>
+              </div>
             </div>
             <div class="contents hidden" id="verify-email-container">
               <div class="flex items-center">
@@ -397,18 +440,19 @@ const emailReplaceInput = document.getElementById(
 ) as HTMLInputElement;
 const emailEditBtn = document.getElementById("email-edit-btn");
 const emailCancelBtn = document.getElementById("email-cancel-btn");
-const emailSaveBtn = document.getElementById("email-save-btn");
-
-// variables for username replacement
-const usernameReplaceInput = document.getElementById(
-  "username-replace-input",
+const emailSaveBtn = document.getElementById(
+  "email-save-btn",
 ) as HTMLInputElement;
-const usernameEditBtn = document.getElementById("username-edit-btn");
-const usernameCancelBtn = document.getElementById("username-cancel-btn");
-const usernameSaveBtn = document.getElementById("username-save-btn");
+const emailReplacePasswordContainer = document.getElementById(
+  "email-replace-password-container",
+);
+const emailReplacePasswordInput = document.getElementById(
+  "email-replace-passsword-input",
+) as HTMLInputElement;
 
 //variables for password replacement
 const changePasswordBtn = document.getElementById("change-password-btn");
+const changePasswordBtn2 = document.getElementById("change-password-btn2");
 const changePasswordForm = document.getElementById("change-password-form");
 const changePasswordContainer = document.getElementById(
   "change-password-container",
@@ -448,6 +492,34 @@ changePasswordBtn?.addEventListener("click", (e) => {
   changePasswordContainer?.classList.toggle("hidden");
 });
 
+changePasswordBtn2?.addEventListener("click", async (e) => {
+  e.preventDefault();
+  const oldPassword = oldPasswordInput.value;
+  const newPassword = NewPasswordInput.value;
+  const reEnterNewPassword = ReEnterPasswordInput.value;
+  if (newPassword != reEnterNewPassword) {
+    alert("Password does not match");
+    return;
+  }
+  const currentUser: any = auth.currentUser;
+  const credentials = EmailAuthProvider.credential(
+    currentUser.email,
+    oldPassword,
+  );
+  try {
+    debugger;
+    await reauthenticateWithCredential(currentUser, credentials);
+    await updatePassword(currentUser, newPassword).then(async () => {
+      await signOut(auth);
+      window.location.href = "login.html";
+    });
+  } catch (e: any) {
+    console.log(e);
+    console.log(e.message);
+    console.log(e.code);
+  }
+});
+
 cancelPasswordChangeButton?.addEventListener("click", (e) => {
   changePasswordContainer?.classList.toggle("hidden");
   changePasswordForm?.classList.toggle("hidden");
@@ -462,14 +534,119 @@ emailEditBtn?.addEventListener("click", (e) => {
   emailSaveBtn?.classList.toggle("hidden");
 });
 
-// username change section
-usernameEditBtn?.addEventListener("click", (e) => {
-  usernameReplaceInput.value = userInfo.email;
-  usernameReplaceInput.disabled = false;
-  usernameEditBtn.classList.toggle("hidden");
-  usernameCancelBtn?.classList.toggle("hidden");
-  usernameSaveBtn?.classList.toggle("hidden");
+emailCancelBtn?.addEventListener("click", (e) => {
+  emailReplaceInput.value = "";
+  emailReplaceInput.disabled = true;
+  emailEditBtn?.classList.toggle("hidden");
+  emailCancelBtn?.classList.toggle("hidden");
+  emailSaveBtn?.classList.toggle("hidden");
 });
+
+async function handleCredentials(
+  currentUser: any,
+  newEmail: string,
+  password?: any,
+) {
+  const credentials = EmailAuthProvider.credential(currentUser.email, password);
+  console.log(password);
+  if (!password) return;
+  console.log("Stuff");
+  try {
+    await reauthenticateWithCredential(currentUser, credentials);
+  } catch (e: any) {
+    console.log(e);
+    console.log(e.message);
+  }
+}
+
+async function updateUserEmailOnDb(userCredentials: any, newEmail: string) {
+  try {
+    debugger;
+    console.log(db);
+    const docRef = collection(db, "users");
+    const userInfo = userSession.getSession();
+    console.log(userCredentials);
+    const user = {
+      activeConfigId: userInfo.activeConfigId,
+      createdAt: userCredentials.createdAt,
+      email: newEmail,
+      role: "user",
+      username: userInfo.username,
+    };
+    console.log(doc(docRef, userCredentials.uid), user);
+    await setDoc(doc(docRef, userCredentials.uid), user);
+  } catch (e: any) {
+    console.log(e);
+    console.log(e.code);
+    console.log(e.message);
+    return;
+  }
+}
+
+emailSaveBtn.onclick = async function userEmailChange() {
+  const currentUser: any = auth.currentUser;
+  const userCredentials = JSON.parse(
+    localStorage.getItem("userCredentials") as any,
+  );
+  const newEmail = emailReplaceInput.value;
+  const passwdInput = document.getElementById(
+    "email-replace-password-input",
+  ) as HTMLInputElement;
+  const password = passwdInput.value;
+  if (newEmail) {
+    initiateUpdateEmailProcess(
+      newEmail,
+      currentUser,
+      userCredentials,
+      password,
+    );
+  }
+};
+
+async function initiateUpdateEmailProcess(
+  newEmail: string,
+  currentUser: any,
+  userCredentials: any,
+  password: string,
+) {
+  const actionCodeSettings = {
+    url: "http://localhost:5173/index.html",
+    handleCodeInApp: true,
+  };
+  try {
+    debugger;
+    await handleCredentials(currentUser, newEmail, password);
+    await verifyBeforeUpdateEmail(currentUser, newEmail, actionCodeSettings);
+    await updateUserEmailOnDb(userCredentials, newEmail);
+    const checkInterval = setInterval(async () => {
+      debugger;
+      const currentUser: any = auth.currentUser;
+      if (currentUser == null) {
+        await signOut(auth);
+        window.location.href = "login.html";
+        clearInterval(checkInterval);
+      }
+      await reload(currentUser);
+      if (currentUser.email == newEmail) {
+        await signOut(auth);
+        window.location.href = "login.html";
+        clearInterval(checkInterval);
+      }
+    });
+    alert("Please check your new email's inbox for verification");
+  } catch (e: any) {
+    console.log(e.message);
+    if (e.message == "Firebase: Error (auth/requires-recent-login).") {
+      alert("For security reasons, please enter your password");
+      emailReplacePasswordContainer?.classList.toggle("hidden");
+    }
+    if (e.code == "auth/user-token-expired") {
+      await signOut(auth);
+      window.location.href = "login.html";
+    }
+    console.log(e);
+  }
+}
 
 //password change section
 function setupPasswordPeek(
@@ -509,6 +686,12 @@ setupPasswordPeek(
   "re-enter-password-peek-btn",
   "re-enter-eye-icon-open",
   "re-enter-eye-icon-close",
+);
+setupPasswordPeek(
+  "email-replace-password-input",
+  "email-replace-password-peek-btn",
+  "email-replace-eye-icon-open",
+  "email-replace-eye-icon-close",
 );
 
 function checkIfUserVerifiedEmail() {
