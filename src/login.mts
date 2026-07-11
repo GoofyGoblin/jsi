@@ -1,5 +1,9 @@
 import { auth, db } from "./firebase.config.ts";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  signOut,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { signInWithGoogle } from "./auth.mts";
 import { userSession } from "./userSession.mts";
@@ -11,6 +15,7 @@ const submitBtn = document.getElementById(
 ) as HTMLButtonElement;
 
 const googleBtn = document.getElementById("google_btn") as HTMLButtonElement;
+const forgotPasswordBtn = document.getElementById("forgot-password-btn") as HTMLButtonElement;
 
 interface loginUser {
   email: string;
@@ -74,6 +79,20 @@ googleBtn.addEventListener("click", async (e) => {
     window.location.href = "index.html";
   }
 });
+
+forgotPasswordBtn.addEventListener("click", (e) => {
+  if (!emailInput.value) {
+    alert("Please type in your email in the email box")
+    return
+  }
+  sendPasswordResetEmail(auth, emailInput.value).then(() => {
+    alert("Please check your email inbox for a password reset")
+  }).catch((e: any) => {
+    console.log(e);
+    console.log(e.message);
+    console.log(e.code);
+  })
+})
 
 function sendUserToHomePage() {
   window.location.href = "index.html";
