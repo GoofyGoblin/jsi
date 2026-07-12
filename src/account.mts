@@ -699,8 +699,11 @@ function checkIfUserVerifiedEmail() {
     localStorage.getItem("isEmailVerified") as any,
   );
 
-  if (!isEmailVerified) {
-    verifyEmailContainer?.classList.remove("hidden");
+  const loggedInWithGoogle = JSON.parse(localStorage.getItem("loggedInWithGoogle") as any)
+  if (!loggedInWithGoogle) {
+    if (!isEmailVerified) {
+      verifyEmailContainer?.classList.remove("hidden");
+    }
   }
 }
 checkIfUserVerifiedEmail();

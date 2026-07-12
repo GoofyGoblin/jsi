@@ -82,7 +82,7 @@
                         <button
                             class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                             role="menuitem"
-                            id="account-settings-btn"
+                            id="settings-btn"
                         >
                             Settings
                         </button>
@@ -143,11 +143,6 @@
                     <div>
                         <a href="#bindings">Keybindings</a>
                     </div>
-                </div>
-                <div
-                    class="m-2 mt-172 font-headline bg-surface-tint flex justify-center rounded-sm p-[0.1rem]"
-                >
-                    <a href="texteditor2.html"> To text editor configuration</a>
                 </div>
             </aside>
             <!-- sidebar end -->
@@ -646,7 +641,12 @@
         <div
             class="flex flex-row gap-8 justify-end pr-20 bg-surface-topbar dark:bg-monolith-surface p-2 sticky left-0 right-0 bottom-0 font-headline border-none"
         >
-            <button class="button-tilingwm" id="save-btn">
+            <div
+                class="m-2 font-headline bg-surface-tint flex justify-center rounded-sm p-[0.1rem]"
+            >
+                <a href="texteditor2.html"> To text editor configuration</a>
+            </div>
+            <button class="button-tilingwm md:ml-180" id="save-btn">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -698,8 +698,14 @@
                 <h5>Import</h5>
             </button>
             <input type="file" id="import-input" class="hidden" />
-            <button id="restore-btn" class="text-blue-200">restore</button>
         </div>
+      <script
+        src="https://jiyao-chatbot-widget.s3.amazonaws.com/chatbot-widget.min.js"
+        data-stream-url="https://dd63bb6z7j4r7pyiwvi5sqmhcq0gsgyz.lambda-url.us-east-1.on.aws/"
+        data-admin-url="https://34i2s32sx774dqpo6wssfi2jzy0ycwmw.lambda-url.us-east-1.on.aws"
+        data-tenant-id="dotfiles-configurator"
+        data-primary-color="#0073e6">
+      </script>
         <!-- bottom canvas end -->
     </body>
 </html>

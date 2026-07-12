@@ -73,6 +73,7 @@ function getUserInfoFromDb(userCreds: any) {
 googleBtn.addEventListener("click", async (e) => {
   e.preventDefault();
   const isSignedIn = await signInWithGoogle("user");
+  localStorage.setItem("loggedInWithGoogle", JSON.stringify(true));
 
   if (isSignedIn) {
     alert("Logged in succesfully");

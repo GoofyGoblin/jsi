@@ -155,9 +155,12 @@ function sendUserToConfigPage(userOption: user_option) {
   const isEmailVerified = JSON.parse(
     localStorage.getItem("isEmailVerified") as any,
   );
-  if (!isEmailVerified) {
-    alert("Please verify your email first");
-    return;
+  const loggedInWithGoogle = JSON.parse(localStorage.getItem("loggedInWithGoogle") as any)
+  if (!loggedInWithGoogle) {
+    if (!isEmailVerified) {
+      alert("Please verify your email first");
+      return;
+    }
   }
   if (userOption.tilingWM == "undefined") {
     window.location.href = "texteditor2.html";

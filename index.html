@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link href="./src/style.css" rel="stylesheet" />
         <link href="./src/font.css" rel="stylesheet" />
-        <title>Dotfiles Configurator</title>
+        <title>Dotbase</title>
         <script src="src/index.mts" type="module" defer></script>
         <script src="src/theme.mts" type="module" defer></script>
         <script src="src/account.mts" type="module" defer></script>
@@ -16,8 +16,9 @@
             <header
                 class="sticky w-full z-100 top-0 left-0 right-0 h-16 bg-surface-topbar dark:bg-monolith-surface flex justify-between items-center"
             >
-                <div class="pl-5">
-                    <h1 class="font-headline text-4xl dark:text-white">.cfg</h1>
+                <div class="pl-5 flex flex-row">
+                    <h1 class="font-headline text-4xl dark:text-white">.</h1>
+                    <h1 class="font-headline text-4xl text-white bg-surface-tint dark:text-surface-tint dark:bg-monolith-surface rounded-lg p-2">base</h1>
                 </div>
                 <div class="flex flex-row gap-2 pr-5">
                     <div>
@@ -288,5 +289,12 @@
                 </button>
             </div>
         </div>
+      <script
+        src="https://jiyao-chatbot-widget.s3.amazonaws.com/chatbot-widget.min.js"
+        data-stream-url="https://dd63bb6z7j4r7pyiwvi5sqmhcq0gsgyz.lambda-url.us-east-1.on.aws/"
+        data-admin-url="https://34i2s32sx774dqpo6wssfi2jzy0ycwmw.lambda-url.us-east-1.on.aws"
+        data-tenant-id="dotfiles-configurator"
+        data-primary-color="#0073e6">
+      </script>
     </body>
 </html>
