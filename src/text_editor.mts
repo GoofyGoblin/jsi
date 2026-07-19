@@ -213,11 +213,6 @@ saveBtn?.addEventListener("click", (e) => {
     languages,
     plugins,
   }, "editor" )
-
-  console.table({"general settings": generalSettings})
-  console.table({"languages": languages})
-  console.table({"plugins": plugins})
-  console.log("uploaded, maybe ig")
 })
 
 function restoreSavedConfiguration(checkBoxes: HTMLInputElement, checkBoxesType: string, userConfig: any, type: string) {
@@ -251,7 +246,6 @@ function restoreSavedConfiguration(checkBoxes: HTMLInputElement, checkBoxesType:
     plugins = userConfig
     return;
   }
-  console.log(generalSettings, languages, plugins);
 }
 
 function callRestoreSavedConfiguration(map: any, userConfig: any, type: any) {
@@ -306,7 +300,6 @@ downloadBtn?.addEventListener("click", (e: any) => {
   nvimGenerator(JSON.parse(userConfig))
   const cleansedJson = userConfig.replace(/\u00a0/g, ' ');
   downloadFile(cleansedJson, "generatedJson.json")
-  console.log("Generated?");
 })
 
 

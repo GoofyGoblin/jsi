@@ -33,6 +33,7 @@ function passSubmittedElementsWhenClicked(
       email: emailInput.value,
       password: password.value,
     };
+    submitBtn.classList.add("pointer-events-none");
     checkSubmittedElements(userObj);
   });
 }
@@ -62,7 +63,6 @@ function getUserInfoFromDb(userCreds: any) {
         "isEmailVerified",
         JSON.stringify(userCreds.emailVerified),
       );
-      localStorage.setItem("userCredentials", JSON.stringify(userCreds));
       sendUserToHomePage();
     } else {
       console.log("No such document!");

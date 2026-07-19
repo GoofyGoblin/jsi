@@ -15,8 +15,9 @@
         <header
             class="sticky w-full z-100 top-0 left-0 right-0 h-16 bg-surface-topbar dark:bg-monolith-surface flex justify-between items-center"
         >
-            <div class="pl-5">
-                <h1 class="font-headline text-4xl dark:text-white">.cfg</h1>
+            <div class="pl-5 flex flex-row" id="headerBtn">
+                <h1 class="font-headline text-4xl dark:text-white">.</h1>
+                <h1 class="font-headline text-4xl text-white bg-surface-tint dark:text-surface-tint dark:bg-monolith-surface rounded-lg p-2">base</h1>
             </div>
             <div class="flex flex-row gap-2 pr-5">
                 <div>
@@ -399,6 +400,7 @@
         <div
             class="flex flex-row gap-8 justify-end pr-20 bg-surface-topbar dark:bg-monolith-surface sticky left-0 right-0 bottom-0 font-headline p-2"
         >
+            <button class="button-tilingwm" id="tilingWmBtn">To tiling wm configuration</button>
             <button class="button-tilingwm" id="save-btn">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -460,6 +462,14 @@
         data-admin-url="https://34i2s32sx774dqpo6wssfi2jzy0ycwmw.lambda-url.us-east-1.on.aws"
         data-tenant-id="dotfiles-configurator"
         data-primary-color="#0073e6">
+      </script>
+      <script>
+        headerBtn.addEventListener("click", (e) => {
+          window.location.href = "index.html";
+        })
+        tilingWmBtn.addEventListener("click", (e) => {
+          window.location.href = "tilingwm2.html"
+        })
       </script>
 
         <!-- main content container end -->

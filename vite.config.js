@@ -6,6 +6,9 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
   ],
+  output: {
+    codeSplitting: true,
+  },
   build: {
     rollupOptions: {
       input: {

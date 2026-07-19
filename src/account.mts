@@ -26,6 +26,11 @@ const settingsBtn = document.getElementById(
   "settings-btn",
 ) as HTMLButtonElement;
 
+if (!userInfo) {
+  window.location.href = "login.html";
+}
+
+
 accountBtn.addEventListener("click", (e) => {
   e.preventDefault();
   accountMenu.classList.toggle("hidden");
@@ -425,7 +430,6 @@ function addAccountDetailsPopup() {
     </script>
     `;
   document.body.append(container);
-  console.log("appended?");
 }
 addAccountDetailsPopup();
 
@@ -507,7 +511,6 @@ changePasswordBtn2?.addEventListener("click", async (e) => {
     oldPassword,
   );
   try {
-    debugger;
     await reauthenticateWithCredential(currentUser, credentials);
     await updatePassword(currentUser, newPassword).then(async () => {
       await signOut(auth);
@@ -548,9 +551,7 @@ async function handleCredentials(
   password?: any,
 ) {
   const credentials = EmailAuthProvider.credential(currentUser.email, password);
-  console.log(password);
   if (!password) return;
-  console.log("Stuff");
   try {
     await reauthenticateWithCredential(currentUser, credentials);
   } catch (e: any) {
@@ -561,19 +562,15 @@ async function handleCredentials(
 
 async function updateUserEmailOnDb(userCredentials: any, newEmail: string) {
   try {
-    debugger;
-    console.log(db);
     const docRef = collection(db, "users");
     const userInfo = userSession.getSession();
-    console.log(userCredentials);
     const user = {
       activeConfigId: userInfo.activeConfigId,
-      createdAt: userCredentials.createdAt,
+      createdAt: userCredentials.metadata.creationTime,
       email: newEmail,
       role: "user",
       username: userInfo.username,
     };
-    console.log(doc(docRef, userCredentials.uid), user);
     await setDoc(doc(docRef, userCredentials.uid), user);
   } catch (e: any) {
     console.log(e);
@@ -597,7 +594,6 @@ emailSaveBtn.onclick = async function userEmailChange() {
     initiateUpdateEmailProcess(
       newEmail,
       currentUser,
-      userCredentials,
       password,
     );
   }
@@ -606,20 +602,13 @@ emailSaveBtn.onclick = async function userEmailChange() {
 async function initiateUpdateEmailProcess(
   newEmail: string,
   currentUser: any,
-  userCredentials: any,
   password: string,
 ) {
-  const actionCodeSettings = {
-    url: "http://localhost:5173/index.html",
-    handleCodeInApp: true,
-  };
   try {
-    debugger;
     await handleCredentials(currentUser, newEmail, password);
-    await verifyBeforeUpdateEmail(currentUser, newEmail, actionCodeSettings);
-    await updateUserEmailOnDb(userCredentials, newEmail);
+    await verifyBeforeUpdateEmail(currentUser, newEmail);
+    await updateUserEmailOnDb(currentUser, newEmail);
     const checkInterval = setInterval(async () => {
-      debugger;
       const currentUser: any = auth.currentUser;
       if (currentUser == null) {
         await signOut(auth);
@@ -632,7 +621,7 @@ async function initiateUpdateEmailProcess(
         window.location.href = "login.html";
         clearInterval(checkInterval);
       }
-    });
+    }, 5000);
     alert("Please check your new email's inbox for verification");
   } catch (e: any) {
     console.log(e.message);
@@ -709,11 +698,8 @@ function checkIfUserVerifiedEmail() {
 checkIfUserVerifiedEmail();
 
 verifyEmailButton?.addEventListener("click", (e) => {
-  const userCredentials = JSON.parse(
-    localStorage.getItem("userCredentials") as any,
-  );
   emailVerification(
-    userCredentials,
+    auth.currentUser,
     "Please check your email inbox for verification",
   );
 });

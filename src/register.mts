@@ -59,6 +59,7 @@ function passSubmittedElements(
       password: password.value,
       confirm_password: confirmPassword.value,
     };
+    submitBtn.classList.add("pointer-events-none");
     weakPasswordUI.classList.add("hidden");
     somethingsWrongUI.classList.add("hidden");
     emailInUseUI.classList.add("hidden");

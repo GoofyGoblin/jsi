@@ -5,7 +5,6 @@ import { getDoc, doc, setDoc } from "firebase/firestore"
 export async function uploadSubcollection(userId: any, userConfig: object, configType: string) {
   const subCollectionRef = doc(db, "users", userId, "config", configType);
   await setDoc(subCollectionRef, userConfig)
-  console.log("Uploaded successfully, i hope...")
 }
 
 export async function getUploadedSubCollection(userId: any, configType: string) {
@@ -15,7 +14,7 @@ export async function getUploadedSubCollection(userId: any, configType: string) 
     if (doc.exists()) {
       localStorage.setItem("user_config", JSON.stringify(doc.data()));
     } else {
-      console.log("No such document!");
+      console.log("No document");
     }
   });
   return userConfig;

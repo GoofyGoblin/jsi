@@ -118,7 +118,6 @@ addNewMonitor.addEventListener("click", (e) => {
 function addNewMonitorInputToDom(
   obj: Record<string, string | Array<string | number>>,
 ) {
-  console.log(obj);
   const container = document.createElement("div");
   container.className = "flex flex-row gap-6 mt-2";
   container.id = `display-${displayContainerCount}`;
@@ -288,7 +287,6 @@ document.querySelectorAll('input[name="termAnswer"]').forEach((input) => {
     const target = e.target as HTMLInputElement;
     if (target.checked) {
       userConfig = updateConfigValue(userConfig, "terminal", target.value);
-      console.log(userConfig);
     }
   });
 });
@@ -301,7 +299,6 @@ repeatRateInput?.addEventListener("input", (e) => {
     "repeatRate",
     Number(target.value) || 0,
   );
-  console.log(userConfig);
 });
 
 // Keyboard layout listener
@@ -315,7 +312,6 @@ document.querySelectorAll('input[name="keyboardValue"]').forEach((input) => {
         target.value,
       );
     }
-    console.log(userConfig);
   });
 });
 
@@ -326,7 +322,6 @@ document.querySelectorAll('input[name="modkeyInput"]').forEach((input) => {
     if (target.checked) {
       userConfig = updateConfigValue(userConfig, "modkey", target.value);
     }
-    console.log(userConfig);
   });
 });
 
@@ -380,7 +375,6 @@ function renderNewKeybinds(action: any, keybind: any) {
         </button>
     `;
   newKeybindDisplays.append(container);
-  console.log(userConfig);
   const deleteBtn = document.getElementById(
     `delete-keybind-btn-${keybindContainerCount}`,
   );
@@ -390,7 +384,6 @@ function renderNewKeybinds(action: any, keybind: any) {
   deleteBtn?.addEventListener("click", (e) => {
     container.remove();
     delete userConfig.keybindings[keybind];
-    console.log(userConfig);
   });
 }
 
@@ -401,8 +394,6 @@ addNewKeybindPromptBtn?.addEventListener("click", (e) => {
   const currentKeybind: string = JSON.parse(
     localStorage.getItem("currentKeybind") as any,
   );
-  console.log(prevKeybind);
-  console.log(currentKeybind);
   if (!currentKeybind) {
     alert("You cant use modkey alone");
     return;
@@ -505,7 +496,6 @@ function restoreSavedKeyboardConfig() {
 }
 
 function restoreSavedKeybindsConfig() {
-  console.log(userConfig.keybindings);
   if (userConfig.keybindings) {
     for (const [key, value] of Object.entries(userConfig.keybindings)) {
       renderNewKeybinds(value, key);
@@ -523,7 +513,6 @@ function restoreSavedConfiguration(importedJson?: string) {
   restoreSavedColorsConfig();
   restoreSavedKeyboardConfig();
   restoreSavedKeybindsConfig();
-  console.log("Restored");
 }
 
 async function restoreUserConfig() {
@@ -549,14 +538,12 @@ function wipeAllAddedContainers(typeOfContainer: string) {
   if (typeOfContainer === "keybinds") {
     for (let i = 0; i < keybindContainerCount; ++i) {
       document.getElementById(`keybind-${i}`)?.remove();
-      console.log("removed keybind count ", i);
     }
   }
 
   if (typeOfContainer === "displays") {
     for (let i = 0; i < displayContainerCount; ++i) {
       document.getElementById(`display-${i}`)?.remove();
-      console.log("removed display count ", i);
     }
   }
 }
