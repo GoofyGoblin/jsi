@@ -363,16 +363,41 @@ addNewBindBtn.addEventListener("click", (e) => {
 
 function renderNewKeybinds(action: any, keybind: any) {
   const container = document.createElement("div");
-  container.className = "flex flex-row gap-10";
+  container.className = "flex flex-row gap-6 mt-2 items-end";
   container.id = `keybind-${keybindContainerCount}`;
   container.innerHTML = `
-        <h1>Modkey + ${keybind}</h1>
-        <h1>${action}</h1>
+    <div>
+        <label class="block text-sm font-medium mb-1 text-gray-800 dark:text-white"
+            >Keybind</label
+        >
+        <div class="flex items-center gap-4">
+            <span
+                class="text-gray-800 dark:text-white bg-[#f7f9fc] dark:bg-[#20262c] h-7 p-2 rounded-sm flex items-center w-full text-sm font-mono"
+                >Modkey + ${keybind}</span
+            >
+        </div>
+    </div>
+
+    <div>
+        <label class="block text-sm font-medium mb-1 text-gray-800 dark:text-white"
+            >Action</label
+        >
+        <div class="flex items-center gap-4">
+            <span
+                class="text-gray-800 dark:text-white bg-[#f7f9fc] dark:bg-[#20262c] h-7 p-2 rounded-sm flex items-center w-full text-sm font-mono"
+                >${action}</span
+            >
+        </div>
+    </div>
+
+    <div>
         <button
+            class="bg-red-500 text-white rounded-sm px-2.5 h-7 flex items-center justify-center hover:bg-red-600 transition-colors cursor-pointer"
             id="delete-keybind-btn-${keybindContainerCount}"
         >
             x
         </button>
+    </div>
     `;
   newKeybindDisplays.append(container);
   const deleteBtn = document.getElementById(
